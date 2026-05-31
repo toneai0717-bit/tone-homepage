@@ -267,7 +267,7 @@ export default function Home() {
       </header>
 
       {/* ── ヒーロースライダー ── */}
-      <section className="relative h-screen min-h-[600px] overflow-hidden">
+      <section className="relative h-[100dvh] min-h-[600px] overflow-hidden">
         <div key={key} className="hero-slide w-full h-full relative overflow-hidden">
           {/* Before：左側・モノクロ */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -350,7 +350,7 @@ export default function Home() {
             <p className="text-amber-100 text-sm mt-1">現地調査・お見積りは無料です。お電話でもお気軽にどうぞ。</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href="tel:0000000000" className="px-6 py-3 bg-white text-amber-600 font-black rounded text-sm hover:bg-amber-50 transition-colors whitespace-nowrap">
+            <a href="tel:0721634427" className="px-6 py-3 bg-white text-amber-600 font-black rounded text-sm hover:bg-amber-50 transition-colors whitespace-nowrap">
               📞 0721-63-4427
             </a>
             <a href="#contact" className="px-6 py-3 border-2 border-white text-white font-bold rounded text-sm hover:bg-white hover:text-amber-600 transition-colors whitespace-nowrap">
@@ -375,6 +375,7 @@ export default function Home() {
                 <img
                   src="/images/Craftman.png"
                   alt="リフォームイメージ"
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -433,6 +434,7 @@ export default function Home() {
                       <img
                         src={before}
                         alt="Before"
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         style={{ filter: "brightness(0.6) saturate(0.4) sepia(0.4)" }}
                       />
@@ -450,6 +452,7 @@ export default function Home() {
                       <img
                         src={after}
                         alt="After"
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         style={{ filter: "brightness(1.05) saturate(1.1)" }}
                       />
@@ -505,6 +508,7 @@ export default function Home() {
                   <img
                     src={img}
                     alt={title}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -669,7 +673,7 @@ export default function Home() {
       </section>
 
       {/* ── フッター ── */}
-      <footer className="bg-stone-900 text-stone-400 py-12 px-6">
+      <footer className="bg-stone-900 text-stone-400 py-12 px-6 pb-28 md:pb-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
             <p className="text-white font-black text-lg mb-1">

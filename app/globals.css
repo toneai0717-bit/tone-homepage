@@ -36,3 +36,8 @@ input, textarea, select {
 body {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* スムーズスクロール */
+html {
+  scroll-behavior: smooth;
+}
