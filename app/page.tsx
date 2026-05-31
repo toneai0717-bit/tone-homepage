@@ -266,61 +266,62 @@ export default function Home() {
 
       {/* ── ヒーロースライダー ── */}
       <section className="relative h-[100dvh] min-h-[600px] overflow-hidden">
-        {/* 全スライドをDOMに保持してopacityで切り替え */}
+        {/* 背景画像スライド */}
         {HERO_SLIDES.map((slide, i) => (
           <div
             key={i}
-            className="absolute inset-0 w-full h-full transition-opacity duration-1000"
+            className="absolute inset-0 transition-opacity duration-1000"
             style={{ opacity: i === current ? 1 : 0 }}
           >
-            {/* Before：左側・モノクロ */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={slide.before}
-              alt="Before"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{
-                filter: "grayscale(100%) brightness(0.65)",
-                clipPath: "polygon(0 0, 33% 0, 27% 100%, 0 100%)",
-              }}
-            />
-            {/* After：右側・カラー */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={slide.after}
-              alt="After"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ clipPath: "polygon(33% 0, 100% 0, 100% 100%, 27% 100%)" }}
+              alt={slide.label}
+              className="w-full h-full object-cover"
             />
           </div>
         ))}
 
-        {/* BEFOREラベル */}
-        <div className="absolute bottom-12 left-8 md:left-16 z-10">
-          <p
-            className="font-black tracking-widest text-white"
-            style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}
-          >
-            BEFORE
+        {/* 暗めオーバーレイ */}
+        <div className="absolute inset-0 bg-black/45 z-10" />
+
+        {/* 中央テキスト */}
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
+          <p className="text-amber-400 text-xs md:text-sm font-bold tracking-[0.3em] mb-4">
+            創業50年 ── 地域に根ざした確かな技術
           </p>
-        </div>
-        {/* AFTERラベル */}
-        <div className="absolute bottom-12 right-8 md:right-16 text-right z-10">
-          <p
-            className="font-black tracking-widest text-white"
-            style={{ fontSize: "clamp(3rem, 8vw, 7rem)", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}
+          <h1
+            className="font-black text-white leading-tight mb-6"
+            style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)", textShadow: "0 2px 24px rgba(0,0,0,0.5)" }}
           >
-            AFTER
+            リフォームで、<br />暮らしが変わる。
+          </h1>
+          <p className="text-white/80 text-sm md:text-base mb-8 max-w-md leading-relaxed">
+            内装・外装・水回りまで。<br className="sm:hidden" />小さな修繕から大きなリノベーションまで対応します。
           </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="#contact"
+              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black rounded transition-colors shadow-lg text-sm tracking-wide"
+            >
+              無料お見積りはこちら
+            </a>
+            <a
+              href="#works"
+              className="px-8 py-4 border-2 border-white text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm backdrop-blur-sm"
+            >
+              施工事例を見る
+            </a>
+          </div>
         </div>
 
         {/* スライダードット */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
           {HERO_SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => go(i)}
-              className={`rounded-full transition-all ${i === current ? "w-8 h-2.5 bg-amber-500" : "w-2.5 h-2.5 bg-white/60 hover:bg-white"}`}
+              className={`rounded-full transition-all ${i === current ? "w-8 h-2.5 bg-amber-500" : "w-2.5 h-2.5 bg-white/50 hover:bg-white"}`}
               aria-label={`スライド${i + 1}`}
             />
           ))}
