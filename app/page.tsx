@@ -14,17 +14,17 @@ const NAV_LINKS = [
 
 const HERO_SLIDES = [
   {
-    bg: "bg-gradient-to-br from-stone-200 via-amber-50 to-stone-100",
+    img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=80",
     headline: "住まいの困ったを、\nすぐに解決。",
     sub: "内装・外装・水回りリフォームまで丁寧にサポート",
   },
   {
-    bg: "bg-gradient-to-br from-amber-100 via-stone-100 to-amber-50",
+    img: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1600&q=80",
     headline: "創業50年の\n確かな技術と信頼。",
     sub: "地域に寄り添い、一軒一軒を大切に施工します",
   },
   {
-    bg: "bg-gradient-to-br from-stone-100 via-amber-100 to-stone-200",
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80",
     headline: "困ったらすぐ\n駆けつけます。",
     sub: "お気軽にご相談ください。無料でお見積りします",
   },
@@ -46,12 +46,30 @@ const WORK_CATEGORIES = [
 ];
 
 const WORKS = [
-  { category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円", color: "bg-amber-50" },
-  { category: "キッチン", title: "システムキッチン入れ替え", price: "85万円", color: "bg-stone-100" },
-  { category: "浴室", title: "ユニットバスまるごと交換", price: "95万円", color: "bg-amber-50" },
-  { category: "外壁", title: "外壁塗装＋防水工事", price: "75万円", color: "bg-stone-100" },
-  { category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円", color: "bg-amber-50" },
-  { category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円", color: "bg-stone-100" },
+  {
+    category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円",
+    img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80",
+  },
+  {
+    category: "キッチン", title: "システムキッチン入れ替え", price: "85万円",
+    img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
+  },
+  {
+    category: "浴室", title: "ユニットバスまるごと交換", price: "95万円",
+    img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=80",
+  },
+  {
+    category: "外壁", title: "外壁塗装＋防水工事", price: "75万円",
+    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+  },
+  {
+    category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円",
+    img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80",
+  },
+  {
+    category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円",
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80",
+  },
 ];
 
 const VOICES = [
@@ -204,22 +222,31 @@ export default function Home() {
 
       {/* ── ヒーロースライダー ── */}
       <section className="relative h-screen max-h-[680px] min-h-[500px] overflow-hidden mt-[57px] md:mt-[89px]">
-        <div
-          key={key}
-          className={`hero-slide w-full h-full flex items-center justify-center ${HERO_SLIDES[current].bg}`}
-        >
-          <div className="text-center px-6">
-            <h1 className="text-4xl md:text-6xl font-black text-stone-800 leading-tight mb-4 whitespace-pre-line">
-              {HERO_SLIDES[current].headline}
-            </h1>
-            <p className="text-stone-600 text-base md:text-lg mb-8">{HERO_SLIDES[current].sub}</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="#contact" className="px-8 py-4 bg-amber-600 text-white font-bold rounded hover:bg-amber-500 transition-colors shadow-md">
-                無料お見積りはこちら
-              </a>
-              <a href="#works" className="px-8 py-4 border-2 border-stone-400 text-stone-700 font-bold rounded hover:border-amber-600 hover:text-amber-600 transition-colors">
-                施工事例を見る
-              </a>
+        <div key={key} className="hero-slide w-full h-full relative">
+          {/* 背景写真 */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={HERO_SLIDES[current].img}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* オーバーレイ */}
+          <div className="absolute inset-0 bg-black/45" />
+          {/* テキスト */}
+          <div className="relative h-full flex items-center justify-center text-center px-6">
+            <div>
+              <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mb-4 whitespace-pre-line drop-shadow-lg">
+                {HERO_SLIDES[current].headline}
+              </h1>
+              <p className="text-white/80 text-base md:text-lg mb-8 drop-shadow">{HERO_SLIDES[current].sub}</p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="#contact" className="px-8 py-4 bg-amber-500 text-white font-bold rounded hover:bg-amber-400 transition-colors shadow-lg">
+                  無料お見積りはこちら
+                </a>
+                <a href="#works" className="px-8 py-4 border-2 border-white text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors">
+                  施工事例を見る
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -264,7 +291,14 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="fade-up">
-              <div className="w-full aspect-video bg-amber-100 rounded-2xl flex items-center justify-center text-6xl">🏠</div>
+              <div className="w-full aspect-video rounded-2xl overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80"
+                  alt="リフォームイメージ"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
             <div className="fade-up fade-up-delay-2">
               <h3 className="text-2xl font-black text-stone-800 mb-4">
@@ -322,10 +356,15 @@ export default function Home() {
           </div>
           {/* カード一覧 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredWorks.map(({ category, title, price, color }, i) => (
-              <div key={i} className="fade-up rounded-xl overflow-hidden border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className={`aspect-video ${color} flex items-center justify-center text-5xl`}>
-                  {WORK_CATEGORIES.find((c) => c.label === category)?.icon ?? "🏠"}
+            {filteredWorks.map(({ category, title, price, img }, i) => (
+              <div key={i} className="fade-up rounded-xl overflow-hidden border border-stone-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
+                <div className="aspect-video overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={img}
+                    alt={title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
                 <div className="p-4">
                   <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">{category}</span>
