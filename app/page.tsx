@@ -288,20 +288,11 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover"
             style={{ clipPath: "polygon(52% 0, 100% 0, 100% 100%, 42% 100%)" }}
           />
-          {/* 斜め白ライン */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: "linear-gradient(to bottom, transparent calc(47% - 2px), rgba(255,255,255,0.9) calc(47% - 2px), rgba(255,255,255,0.9) calc(47% + 2px), transparent calc(47% + 2px))",
-              transform: "skewY(-8deg)",
-              transformOrigin: "left center",
-            }}
-          />
           {/* BEFOREラベル */}
           <div className="absolute bottom-12 left-8 md:left-16">
             <p
               className="font-black tracking-widest text-white"
-              style={{ fontSize: "clamp(3rem, 8vw, 7rem)", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}
+              style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}
             >
               BEFORE
             </p>
