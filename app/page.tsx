@@ -148,12 +148,10 @@ function useHeaderScroll() {
 
 function useHeroSlider(count: number) {
   const [current, setCurrent] = useState(0);
-  const [key, setKey] = useState(0);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const go = useCallback((i: number) => {
     setCurrent(i);
-    setKey((k) => k + 1);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => go((i + 1) % count), 5500);
   }, [count]);
@@ -163,7 +161,7 @@ function useHeroSlider(count: number) {
     return () => { if (timer.current) clearTimeout(timer.current); };
   }, [go]);
 
-  return { current, key, go };
+  return { current, go };
 }
 
 // ── コンポーネント ────────────────────────────────────────
@@ -180,7 +178,7 @@ function Stars({ count }: { count: number }) {
 export default function Home() {
   useFadeUp();
   const scrolled = useHeaderScroll();
-  const { current, key, go } = useHeroSlider(HERO_SLIDES.length);
+  const { current, go } = useHeroSlider(HERO_SLIDES.length);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("すべて");
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
@@ -268,49 +266,56 @@ export default function Home() {
 
       {/* ── ヒーロースライダー ── */}
       <section className="relative h-[100dvh] min-h-[600px] overflow-hidden">
-        <div key={key} className="hero-slide w-full h-full relative overflow-hidden">
-          {/* Before：左側・モノクロ */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={HERO_SLIDES[current].before}
-            alt="Before"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              filter: "grayscale(100%) brightness(0.65)",
-              clipPath: "polygon(0 0, 33% 0, 27% 100%, 0 100%)",
-            }}
-          />
-          {/* After：右側・カラー */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={HERO_SLIDES[current].after}
-            alt="After"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ clipPath: "polygon(33% 0, 100% 0, 100% 100%, 27% 100%)" }}
-          />
-          {/* BEFOREラベル */}
-          <div className="absolute bottom-12 left-8 md:left-16">
-            <p
-              className="font-black tracking-widest text-white"
-              style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}
-            >
-              BEFORE
-            </p>
+        {/* 全スライドをDOMに保持してopacityで切り替え */}
+        {HERO_SLIDES.map((slide, i) => (
+          <div
+            key={i}
+            className="absolute inset-0 w-full h-full transition-opacity duration-1000"
+            style={{ opacity: i === current ? 1 : 0 }}
+          >
+            {/* Before：左側・モノクロ */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={slide.before}
+              alt="Before"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{
+                filter: "grayscale(100%) brightness(0.65)",
+                clipPath: "polygon(0 0, 33% 0, 27% 100%, 0 100%)",
+              }}
+            />
+            {/* After：右側・カラー */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={slide.after}
+              alt="After"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ clipPath: "polygon(33% 0, 100% 0, 100% 100%, 27% 100%)" }}
+            />
           </div>
-          {/* AFTERラベル */}
-          <div className="absolute bottom-12 right-8 md:right-16 text-right">
-            <p
-              className="font-black tracking-widest text-white"
-              style={{ fontSize: "clamp(3rem, 8vw, 7rem)", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}
-            >
-              AFTER
-            </p>
-          </div>
+        ))}
 
+        {/* BEFOREラベル */}
+        <div className="absolute bottom-12 left-8 md:left-16 z-10">
+          <p
+            className="font-black tracking-widest text-white"
+            style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}
+          >
+            BEFORE
+          </p>
+        </div>
+        {/* AFTERラベル */}
+        <div className="absolute bottom-12 right-8 md:right-16 text-right z-10">
+          <p
+            className="font-black tracking-widest text-white"
+            style={{ fontSize: "clamp(3rem, 8vw, 7rem)", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}
+          >
+            AFTER
+          </p>
         </div>
 
         {/* スライダードット */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
           {HERO_SLIDES.map((_, i) => (
             <button
               key={i}
