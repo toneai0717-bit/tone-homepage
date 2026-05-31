@@ -307,30 +307,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* 営業時間インフォボックス（右下） */}
-          <div className="absolute bottom-28 md:bottom-16 right-4 md:right-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl p-4 w-52 hidden md:block">
-            <div className="flex items-center gap-2 mb-2.5">
-              <span className="text-amber-600 text-base">📣</span>
-              <span className="text-amber-600 font-bold text-sm italic">information</span>
-            </div>
-            <div className="space-y-0.5 text-xs text-stone-700 mb-2">
-              {[
-                { day: "月曜日", time: "9:00〜18:00" },
-                { day: "火曜日", time: "9:00〜18:00" },
-                { day: "水曜日", time: "定休日", closed: true },
-                { day: "木曜日", time: "9:00〜18:00" },
-                { day: "金曜日", time: "9:00〜18:00" },
-                { day: "土曜日", time: "10:00〜18:00" },
-                { day: "日曜日", time: "10:00〜17:00" },
-              ].map(({ day, time, closed }) => (
-                <div key={day} className="flex justify-between gap-3">
-                  <span className={closed ? "text-red-400 font-medium" : ""}>{day}</span>
-                  <span className={closed ? "text-red-400 font-medium" : ""}>{time}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-stone-500 border-t border-stone-100 pt-2">営業時間のご案内</p>
-          </div>
         </div>
 
         {/* スライダードット */}
