@@ -373,7 +373,7 @@ export default function Home() {
               <div className="w-full aspect-video rounded-2xl overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://images.unsplash.com/photo-1669612803668-2b2a770f9890?w=800&q=80"
+                  src="/images/Craftman.png"
                   alt="リフォームイメージ"
                   className="w-full h-full object-cover"
                 />
