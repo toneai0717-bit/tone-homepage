@@ -1,55 +1,95 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 
-// ── データ定義 ────────────────────────────────────────────
-const SERVICES = [
+// ── データ ────────────────────────────────────────────────
+const NAV_LINKS = [
+  { href: "#about-us", label: "はじめての方へ" },
+  { href: "#works", label: "施工事例" },
+  { href: "#voice", label: "お客様の声" },
+  { href: "#news", label: "お知らせ" },
+  { href: "#company", label: "会社情報" },
+];
+
+const HERO_SLIDES = [
   {
-    icon: "🏠",
-    title: "内装工事",
-    desc: "壁紙・床・天井など、室内全般のリフォームに対応。素材選びからご提案します。",
+    bg: "bg-gradient-to-br from-stone-200 via-amber-50 to-stone-100",
+    headline: "住まいの困ったを、\nすぐに解決。",
+    sub: "内装・外装・水回りリフォームまで丁寧にサポート",
   },
   {
-    icon: "🏗️",
-    title: "外装工事",
-    desc: "外壁塗装・屋根修繕・防水工事など、建物の外観を美しく長持ちさせます。",
+    bg: "bg-gradient-to-br from-amber-100 via-stone-100 to-amber-50",
+    headline: "創業50年の\n確かな技術と信頼。",
+    sub: "地域に寄り添い、一軒一軒を大切に施工します",
   },
   {
-    icon: "🚿",
-    title: "水回りリフォーム",
-    desc: "キッチン・浴室・トイレのリフォームで、毎日の暮らしをより快適に。",
-  },
-  {
-    icon: "🔨",
-    title: "総合リフォーム",
-    desc: "小規模修繕から大規模改修まで。お客様のご要望に幅広くお応えします。",
+    bg: "bg-gradient-to-br from-stone-100 via-amber-100 to-stone-200",
+    headline: "困ったらすぐ\n駆けつけます。",
+    sub: "お気軽にご相談ください。無料でお見積りします",
   },
 ];
 
+const WORK_CATEGORIES = [
+  { icon: "🛋", label: "リビング" },
+  { icon: "🍳", label: "キッチン" },
+  { icon: "🛁", label: "浴室" },
+  { icon: "🚿", label: "洗面所" },
+  { icon: "🚽", label: "トイレ" },
+  { icon: "🛏", label: "寝室" },
+  { icon: "🏠", label: "外壁" },
+  { icon: "🔨", label: "屋根" },
+  { icon: "🪟", label: "窓・サッシ" },
+  { icon: "🏗️", label: "増改築" },
+  { icon: "♿", label: "バリアフリー" },
+  { icon: "✨", label: "フルリノベ" },
+];
+
 const WORKS = [
-  { label: "リビングリフォーム", color: "bg-amber-100" },
-  { label: "外壁塗装", color: "bg-stone-200" },
-  { label: "キッチン改装", color: "bg-amber-200" },
-  { label: "浴室リフォーム", color: "bg-stone-300" },
-  { label: "屋根修繕", color: "bg-amber-300" },
-  { label: "フルリノベーション", color: "bg-stone-200" },
+  { category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円", color: "bg-amber-50" },
+  { category: "キッチン", title: "システムキッチン入れ替え", price: "85万円", color: "bg-stone-100" },
+  { category: "浴室", title: "ユニットバスまるごと交換", price: "95万円", color: "bg-amber-50" },
+  { category: "外壁", title: "外壁塗装＋防水工事", price: "75万円", color: "bg-stone-100" },
+  { category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円", color: "bg-amber-50" },
+  { category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円", color: "bg-stone-100" },
+];
+
+const VOICES = [
+  {
+    name: "K.Mさん（40代・女性）",
+    text: "水回りのリフォームをお願いしました。担当の方がとても丁寧で、細かい要望にも柔軟に対応してくれました。仕上がりも大満足です！",
+    stars: 5,
+  },
+  {
+    name: "T.Yさん（50代・男性）",
+    text: "外壁塗装をお願いしました。近所の紹介で来ましたが、見積もりから工事まで誠実に対応してもらえて安心でした。また何かあればお願いします。",
+    stars: 5,
+  },
+  {
+    name: "A.Sさん（60代・女性）",
+    text: "急な雨漏りの修繕をお願いしました。連絡した翌日に来てくれて本当に助かりました。創業50年の実績は伊達じゃないと感じました。",
+    stars: 5,
+  },
+];
+
+const NEWS = [
+  { date: "2024.05.01", label: "お知らせ", title: "GW期間中の営業についてのご案内" },
+  { date: "2024.04.15", label: "お知らせ", title: "春のリフォームキャンペーン実施中！" },
+  { date: "2024.03.20", label: "施工事例", title: "N様邸 LDKリフォーム事例を公開しました" },
+  { date: "2024.03.01", label: "お知らせ", title: "ホームページをリニューアルしました" },
 ];
 
 // ── フック ────────────────────────────────────────────────
 function useFadeUp() {
   useEffect(() => {
+    const targets = document.querySelectorAll(".fade-up");
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
+        entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); });
       },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
-    document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+    targets.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 }
@@ -57,263 +97,314 @@ function useFadeUp() {
 function useHeaderScroll() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
   }, []);
   return scrolled;
 }
 
-function useSlideshow(length: number, interval = 4000) {
+function useHeroSlider(count: number) {
   const [current, setCurrent] = useState(0);
-  const [animating, setAnimating] = useState(true);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [key, setKey] = useState(0);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const goTo = (index: number) => {
-    setAnimating(false);
-    setTimeout(() => {
-      setCurrent(index);
-      setAnimating(true);
-    }, 50);
-  };
+  const go = useCallback((i: number) => {
+    setCurrent(i);
+    setKey((k) => k + 1);
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => go((i + 1) % count), 5500);
+  }, [count]);
 
   useEffect(() => {
-    timerRef.current = setTimeout(() => {
-      goTo((current + 1) % length);
-    }, interval);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [current, length, interval]);
+    timer.current = setTimeout(() => go(1), 5500);
+    return () => { if (timer.current) clearTimeout(timer.current); };
+  }, [go]);
 
-  return { current, goTo, animating };
+  return { current, key, go };
 }
 
-// ── メインコンポーネント ──────────────────────────────────
+// ── コンポーネント ────────────────────────────────────────
+function Stars({ count }: { count: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {Array.from({ length: count }).map((_, i) => (
+        <span key={i} className="text-amber-400 text-sm">★</span>
+      ))}
+    </div>
+  );
+}
+
 export default function Home() {
   useFadeUp();
   const scrolled = useHeaderScroll();
-  const { current, goTo, animating } = useSlideshow(WORKS.length);
+  const { current, key, go } = useHeroSlider(HERO_SLIDES.length);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("すべて");
+
+  const filteredWorks = activeCategory === "すべて"
+    ? WORKS
+    : WORKS.filter((w) => w.category === activeCategory);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white text-stone-800">
+
       {/* ── ヘッダー ── */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-stone-50/95 backdrop-blur-sm header-scrolled" : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-black text-stone-800 tracking-tight">
-            株式会社<span className="text-amber-700">戸根</span>
+      <header className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${scrolled ? "header-shadow" : ""}`}>
+        {/* 上部バー */}
+        <div className="bg-stone-800 text-white text-xs py-2 px-6 hidden md:flex justify-end items-center gap-6">
+          <span>📞 00-0000-0000</span>
+          <span>月〜土 8:00〜18:00（日祝応相談）</span>
+        </div>
+        {/* メインナビ */}
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+          <Link href="/" className="flex flex-col leading-tight">
+            <span className="text-xl font-black text-stone-800">株式会社<span className="text-amber-600">戸根</span></span>
+            <span className="text-xs text-stone-400 font-medium tracking-widest">TONE REFORM</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
-            <a href="#services" className="hover:text-amber-700 transition-colors">事業内容</a>
-            <a href="#works" className="hover:text-amber-700 transition-colors">施工例</a>
-            <a href="#about" className="hover:text-amber-700 transition-colors">会社概要</a>
-            <a
-              href="#contact"
-              className="px-5 py-2 rounded-full bg-amber-700 text-white hover:bg-amber-600 transition-colors text-sm font-bold"
-            >
-              お問い合わせ
-            </a>
+          {/* PC nav */}
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-stone-600">
+            {NAV_LINKS.map(({ href, label }) => (
+              <a key={label} href={href} className="hover:text-amber-600 transition-colors py-1 border-b-2 border-transparent hover:border-amber-600">
+                {label}
+              </a>
+            ))}
           </nav>
           <a
             href="#contact"
-            className="md:hidden px-4 py-2 rounded-full bg-amber-700 text-white text-xs font-bold"
+            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded bg-amber-600 text-white font-bold text-sm hover:bg-amber-500 transition-colors"
           >
-            相談する
+            無料お見積り
           </a>
+          {/* ハンバーガー */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden w-11 h-11 flex flex-col justify-center items-center gap-1.5"
+            aria-label="メニュー"
+          >
+            <span className={`block w-6 h-0.5 bg-stone-800 transition-all ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`block w-6 h-0.5 bg-stone-800 transition-all ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-6 h-0.5 bg-stone-800 transition-all ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          </button>
         </div>
-      </header>
-
-      {/* ── ヒーロー ── */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-stone-100 via-amber-50 to-stone-200">
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `radial-gradient(circle at 20% 50%, #d97706 0%, transparent 50%),
-                              radial-gradient(circle at 80% 20%, #92400e 0%, transparent 40%)`,
-          }}
-        />
-        <div className="relative text-center px-6 max-w-4xl mx-auto">
-          <p className="text-amber-700 font-bold text-sm tracking-widest mb-4 fade-up">
-            創業50年 ── 地域に寄り添う工務店
-          </p>
-          <h1 className="text-5xl md:text-7xl font-black text-stone-800 leading-tight mb-6 fade-up fade-up-delay-1">
-            住まいの<span className="text-amber-700">困った</span>を、
-            <br />すぐに解決。
-          </h1>
-          <p className="text-stone-600 text-lg md:text-xl leading-relaxed mb-10 fade-up fade-up-delay-2">
-            内装・外装・水回りリフォームまで、<br className="md:hidden" />
-            丁寧な仕事でお客様の暮らしを守ります。
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center fade-up fade-up-delay-3">
-            <a
-              href="#contact"
-              className="px-8 py-4 rounded-full bg-amber-700 text-white font-bold text-base hover:bg-amber-600 transition-all shadow-lg hover:shadow-amber-200 hover:-translate-y-0.5"
-            >
-              無料相談はこちら →
-            </a>
-            <a
-              href="#works"
-              className="px-8 py-4 rounded-full border-2 border-stone-400 text-stone-700 font-bold text-base hover:border-amber-700 hover:text-amber-700 transition-colors"
-            >
-              施工例を見る
+        {/* モバイルメニュー */}
+        {menuOpen && (
+          <div className="md:hidden bg-white border-t border-stone-100 px-6 py-4 space-y-3">
+            {NAV_LINKS.map(({ href, label }) => (
+              <a key={label} href={href} onClick={() => setMenuOpen(false)} className="block py-2 text-stone-700 font-medium border-b border-stone-100">
+                {label}
+              </a>
+            ))}
+            <a href="#contact" onClick={() => setMenuOpen(false)} className="block py-3 text-center bg-amber-600 text-white font-bold rounded mt-2">
+              無料お見積り
             </a>
           </div>
-        </div>
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-stone-400">
-          <span className="text-xs tracking-widest">SCROLL</span>
-          <div className="w-px h-12 bg-gradient-to-b from-stone-400 to-transparent animate-pulse" />
-        </div>
-      </section>
+        )}
+      </header>
 
-      {/* ── 実績バー ── */}
-      <section className="bg-amber-700 py-10">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
-          {[
-            { num: "50", unit: "年", label: "創業からの実績" },
-            { num: "1,000", unit: "+", label: "累計施工件数" },
-            { num: "24", unit: "h", label: "緊急対応体制" },
-            { num: "98", unit: "%", label: "顧客満足度" },
-          ].map(({ num, unit, label }) => (
-            <div key={label} className="fade-up">
-              <p className="text-4xl font-black">
-                {num}<span className="text-2xl">{unit}</span>
-              </p>
-              <p className="text-amber-200 text-sm mt-1">{label}</p>
+      {/* ── ヒーロースライダー ── */}
+      <section className="relative h-screen max-h-[680px] min-h-[500px] overflow-hidden mt-[57px] md:mt-[89px]">
+        <div
+          key={key}
+          className={`hero-slide w-full h-full flex items-center justify-center ${HERO_SLIDES[current].bg}`}
+        >
+          <div className="text-center px-6">
+            <h1 className="text-4xl md:text-6xl font-black text-stone-800 leading-tight mb-4 whitespace-pre-line">
+              {HERO_SLIDES[current].headline}
+            </h1>
+            <p className="text-stone-600 text-base md:text-lg mb-8">{HERO_SLIDES[current].sub}</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="#contact" className="px-8 py-4 bg-amber-600 text-white font-bold rounded hover:bg-amber-500 transition-colors shadow-md">
+                無料お見積りはこちら
+              </a>
+              <a href="#works" className="px-8 py-4 border-2 border-stone-400 text-stone-700 font-bold rounded hover:border-amber-600 hover:text-amber-600 transition-colors">
+                施工事例を見る
+              </a>
             </div>
+          </div>
+        </div>
+        {/* ドット */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+          {HERO_SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => go(i)}
+              className={`rounded-full transition-all ${i === current ? "w-8 h-2.5 bg-amber-600" : "w-2.5 h-2.5 bg-white/60 hover:bg-white"}`}
+              aria-label={`スライド${i + 1}`}
+            />
           ))}
         </div>
       </section>
 
-      {/* ── 事業内容 ── */}
-      <section id="services" className="py-24 px-6 bg-stone-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 fade-up">
-            <p className="text-amber-700 font-bold text-sm tracking-widest mb-2">SERVICES</p>
-            <h2 className="text-4xl font-black text-stone-800">事業内容</h2>
-            <p className="text-stone-500 mt-3">お客様のあらゆるニーズにお応えします</p>
+      {/* ── CTAバナー ── */}
+      <section className="bg-amber-600 py-8 px-6">
+        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="text-white text-center md:text-left">
+            <p className="text-xl font-black">まずはお気軽にご相談ください</p>
+            <p className="text-amber-100 text-sm mt-1">現地調査・お見積りは無料です。お電話でもお気軽にどうぞ。</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {SERVICES.map(({ icon, title, desc }, i) => (
-              <div
-                key={title}
-                className={`fade-up fade-up-delay-${i + 1} bg-white rounded-2xl p-6 border border-stone-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all`}
-              >
-                <div className="text-4xl mb-4">{icon}</div>
-                <h3 className="text-lg font-bold text-stone-800 mb-2">{title}</h3>
-                <p className="text-stone-500 text-sm leading-relaxed">{desc}</p>
-              </div>
-            ))}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a href="tel:0000000000" className="px-6 py-3 bg-white text-amber-600 font-black rounded text-sm hover:bg-amber-50 transition-colors whitespace-nowrap">
+              📞 00-0000-0000
+            </a>
+            <a href="#contact" className="px-6 py-3 border-2 border-white text-white font-bold rounded text-sm hover:bg-white hover:text-amber-600 transition-colors whitespace-nowrap">
+              メールで相談
+            </a>
           </div>
         </div>
       </section>
 
-      {/* ── 施工例スライドショー ── */}
-      <section id="works" className="py-24 bg-stone-100">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16 fade-up">
-            <p className="text-amber-700 font-bold text-sm tracking-widest mb-2">WORKS</p>
-            <h2 className="text-4xl font-black text-stone-800">施工例</h2>
-            <p className="text-stone-500 mt-3">実際の施工事例をご覧ください</p>
+      {/* ── はじめての方へ ── */}
+      <section id="about-us" className="py-20 px-6 bg-stone-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">ABOUT US</p>
+            <h2 className="text-3xl font-black text-stone-800">はじめての方へ</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
           </div>
-          <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-video fade-up">
-            <div
-              className={`w-full h-full flex items-center justify-center ${WORKS[current].color} ${animating ? "slide-active" : "opacity-0"}`}
-            >
-              <div className="text-center">
-                <p className="text-6xl mb-4">🏠</p>
-                <p className="text-2xl font-bold text-stone-700">{WORKS[current].label}</p>
-                <p className="text-stone-500 mt-2 text-sm">施工写真をここに入れます</p>
-              </div>
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div className="fade-up">
+              <div className="w-full aspect-video bg-amber-100 rounded-2xl flex items-center justify-center text-6xl">🏠</div>
             </div>
-            <button
-              onClick={() => goTo((current - 1 + WORKS.length) % WORKS.length)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-colors text-stone-700 font-bold text-lg"
-              aria-label="前へ"
-            >
-              ‹
-            </button>
-            <button
-              onClick={() => goTo((current + 1) % WORKS.length)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-colors text-stone-700 font-bold text-lg"
-              aria-label="次へ"
-            >
-              ›
-            </button>
+            <div className="fade-up fade-up-delay-2">
+              <h3 className="text-2xl font-black text-stone-800 mb-4">
+                創業50年、地域に根ざした<br />リフォーム工務店です
+              </h3>
+              <p className="text-stone-600 leading-relaxed mb-4">
+                私たち株式会社戸根は、地域のお客様に長年支えていただいてきた地域密着型の工務店です。「困ったらすぐ来てくれる」をモットーに、内装・外装・水回りリフォームまで幅広く対応しています。
+              </p>
+              <p className="text-stone-600 leading-relaxed mb-6">
+                小さな修繕から大きなリノベーションまで、お客様のご要望と予算に合わせた最適なプランをご提案します。まずはお気軽にご相談ください。
+              </p>
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {[
+                  { num: "50年", label: "の実績" },
+                  { num: "1,000件", label: "以上の施工" },
+                  { num: "98%", label: "顧客満足度" },
+                ].map(({ num, label }) => (
+                  <div key={label} className="text-center bg-white rounded-xl p-3 border border-stone-100">
+                    <p className="text-xl font-black text-amber-600">{num}</p>
+                    <p className="text-xs text-stone-500 mt-0.5">{label}</p>
+                  </div>
+                ))}
+              </div>
+              <a href="#company" className="inline-block px-6 py-3 border-2 border-amber-600 text-amber-600 font-bold rounded hover:bg-amber-600 hover:text-white transition-colors text-sm">
+                会社情報を見る →
+              </a>
+            </div>
           </div>
-          <div className="flex justify-center gap-2 mt-6">
-            {WORKS.map((_, i) => (
+        </div>
+      </section>
+
+      {/* ── 施工事例 ── */}
+      <section id="works" className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">WORKS</p>
+            <h2 className="text-3xl font-black text-stone-800">施工事例</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
+          </div>
+          {/* カテゴリーフィルター */}
+          <div className="flex flex-wrap gap-2 justify-center mb-8 fade-up">
+            {["すべて", ...WORK_CATEGORIES.map((c) => c.label)].map((cat) => (
               <button
-                key={i}
-                onClick={() => goTo(i)}
-                className={`rounded-full transition-all ${
-                  i === current ? "w-8 h-2 bg-amber-700" : "w-2 h-2 bg-stone-300 hover:bg-stone-400"
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                  activeCategory === cat
+                    ? "bg-amber-600 text-white border-amber-600"
+                    : "bg-white text-stone-600 border-stone-200 hover:border-amber-400"
                 }`}
-                aria-label={`施工例${i + 1}`}
-              />
-            ))}
-          </div>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mt-8">
-            {WORKS.map(({ label, color }, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className={`rounded-xl aspect-square flex items-center justify-center text-xs font-medium text-stone-600 ${color} ${
-                  i === current ? "ring-2 ring-amber-700" : "opacity-70 hover:opacity-100"
-                } transition-all`}
               >
-                {label}
+                {cat}
               </button>
             ))}
           </div>
+          {/* カード一覧 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredWorks.map(({ category, title, price, color }, i) => (
+              <div key={i} className="fade-up rounded-xl overflow-hidden border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className={`aspect-video ${color} flex items-center justify-center text-5xl`}>
+                  {WORK_CATEGORIES.find((c) => c.label === category)?.icon ?? "🏠"}
+                </div>
+                <div className="p-4">
+                  <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">{category}</span>
+                  <h3 className="font-bold text-stone-800 mt-2 mb-1">{title}</h3>
+                  <p className="text-sm text-stone-400">施工費用目安：{price}〜</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10 fade-up">
+            <a href="#contact" className="inline-block px-8 py-3 bg-amber-600 text-white font-bold rounded hover:bg-amber-500 transition-colors">
+              施工のご相談はこちら
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* ── 選ばれる理由 ── */}
-      <section className="py-24 px-6 bg-stone-800 text-white">
+      {/* ── お客様の声 ── */}
+      <section id="voice" className="py-20 px-6 bg-stone-50">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 fade-up">
-            <p className="text-amber-400 font-bold text-sm tracking-widest mb-2">WHY CHOOSE US</p>
-            <h2 className="text-4xl font-black">選ばれる3つの理由</h2>
+          <div className="text-center mb-12 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">VOICE</p>
+            <h2 className="text-3xl font-black text-stone-800">お客様の声</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { num: "01", title: "創業50年の信頼と実績", desc: "地域のお客様に長年支えていただいた実績があります。確かな技術と誠実な仕事でご満足いただいています。" },
-              { num: "02", title: "現場に直接駆けつける", desc: "「困ったらすぐ来てくれる」が私たちのモットー。緊急の修繕にも迅速に対応します。" },
-              { num: "03", title: "丁寧なヒアリングと提案", desc: "お客様のご要望をしっかりお聞きし、予算に合わせた最適なプランをご提案します。" },
-            ].map(({ num, title, desc }, i) => (
-              <div key={num} className={`fade-up fade-up-delay-${i + 1} border border-stone-600 rounded-2xl p-8`}>
-                <p className="text-amber-400 text-5xl font-black mb-4 opacity-60">{num}</p>
-                <h3 className="text-xl font-bold mb-3">{title}</h3>
-                <p className="text-stone-400 leading-relaxed text-sm">{desc}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {VOICES.map(({ name, text, stars }, i) => (
+              <div key={i} className={`fade-up fade-up-delay-${i + 1} bg-white rounded-2xl p-6 border border-stone-100 shadow-sm`}>
+                <Stars count={stars} />
+                <p className="text-stone-600 text-sm leading-relaxed mt-3 mb-4">「{text}」</p>
+                <p className="text-xs font-bold text-stone-500">{name}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 会社概要 ── */}
-      <section id="about" className="py-24 px-6 bg-amber-50">
+      {/* ── お知らせ ── */}
+      <section id="news" className="py-20 px-6 bg-white">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16 fade-up">
-            <p className="text-amber-700 font-bold text-sm tracking-widest mb-2">ABOUT</p>
-            <h2 className="text-4xl font-black text-stone-800">会社概要</h2>
+          <div className="text-center mb-12 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">NEWS</p>
+            <h2 className="text-3xl font-black text-stone-800">お知らせ</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
           </div>
-          <div className="bg-white rounded-3xl shadow-sm border border-stone-100 overflow-hidden fade-up">
+          <div className="space-y-0 border-t border-stone-100 fade-up">
+            {NEWS.map(({ date, label, title }) => (
+              <div key={title} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 py-4 border-b border-stone-100 hover:bg-stone-50 px-2 transition-colors">
+                <span className="text-stone-400 text-sm shrink-0">{date}</span>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded shrink-0 ${
+                  label === "施工事例" ? "bg-amber-100 text-amber-700" : "bg-stone-100 text-stone-600"
+                }`}>{label}</span>
+                <span className="text-stone-700 text-sm">{title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 会社情報 ── */}
+      <section id="company" className="py-20 px-6 bg-stone-50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">COMPANY</p>
+            <h2 className="text-3xl font-black text-stone-800">会社情報</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden fade-up">
             {[
               { label: "会社名", value: "株式会社戸根" },
-              { label: "事業内容", value: "内装工事・外装工事・リフォーム全般" },
-              { label: "創業", value: "創業50年" },
-              { label: "営業時間", value: "8:00〜18:00（土日祝対応可）" },
+              { label: "設立", value: "創業50年" },
+              { label: "事業内容", value: "内装工事・外装工事・水回りリフォーム・リノベーション" },
+              { label: "営業時間", value: "月〜土 8:00〜18:00（日祝応相談）" },
+              { label: "電話番号", value: "00-0000-0000" },
               { label: "対応エリア", value: "地域密着型（詳細はお問い合わせください）" },
-              { label: "Instagram", value: "@tone_reform" },
+              { label: "SNS", value: "Instagram / LINE" },
             ].map(({ label, value }, i) => (
-              <div
-                key={label}
-                className={`flex flex-col sm:flex-row px-8 py-5 gap-2 ${i % 2 === 0 ? "bg-white" : "bg-stone-50"}`}
-              >
-                <span className="text-stone-500 text-sm font-semibold w-32 shrink-0">{label}</span>
+              <div key={label} className={`flex flex-col sm:flex-row px-6 py-4 gap-2 ${i % 2 === 0 ? "bg-white" : "bg-stone-50"}`}>
+                <span className="text-stone-500 text-sm font-semibold w-36 shrink-0">{label}</span>
                 <span className="text-stone-800 text-sm">{value}</span>
               </div>
             ))}
@@ -322,40 +413,30 @@ export default function Home() {
       </section>
 
       {/* ── お問い合わせ ── */}
-      <section id="contact" className="py-24 px-6 bg-stone-50">
+      <section id="contact" className="py-20 px-6 bg-amber-600">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12 fade-up">
-            <p className="text-amber-700 font-bold text-sm tracking-widest mb-2">CONTACT</p>
-            <h2 className="text-4xl font-black text-stone-800">お問い合わせ</h2>
-            <p className="text-stone-500 mt-3">お気軽にご相談ください。無料でお見積りします。</p>
+          <div className="text-center mb-10 fade-up">
+            <p className="text-amber-100 font-bold text-xs tracking-widest mb-2">CONTACT</p>
+            <h2 className="text-3xl font-black text-white">お問い合わせ・無料お見積り</h2>
+            <p className="text-amber-100 mt-3 text-sm">お気軽にご相談ください。通常2営業日以内にご返信します。</p>
           </div>
-          <form className="bg-white rounded-3xl shadow-sm border border-stone-100 p-8 space-y-5 fade-up">
-            <div>
-              <label className="block text-sm font-semibold text-stone-700 mb-1.5">
-                お名前 <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="山田 太郎"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-stone-700 mb-1.5">電話番号</label>
-              <input
-                type="tel"
-                placeholder="090-0000-0000"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-stone-700 mb-1.5">メールアドレス</label>
-              <input
-                type="email"
-                placeholder="example@mail.com"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors"
-              />
-            </div>
+          <form className="bg-white rounded-2xl p-8 space-y-4 fade-up">
+            {[
+              { label: "お名前", type: "text", placeholder: "山田 太郎", required: true },
+              { label: "電話番号", type: "tel", placeholder: "090-0000-0000", required: false },
+              { label: "メールアドレス", type: "email", placeholder: "example@mail.com", required: false },
+            ].map(({ label, type, placeholder, required }) => (
+              <div key={label}>
+                <label className="block text-sm font-semibold text-stone-700 mb-1.5">
+                  {label} {required && <span className="text-red-400">*</span>}
+                </label>
+                <input
+                  type={type}
+                  placeholder={placeholder}
+                  className="w-full border border-stone-200 rounded-lg px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors"
+                />
+              </div>
+            ))}
             <div>
               <label className="block text-sm font-semibold text-stone-700 mb-1.5">
                 ご相談内容 <span className="text-red-400">*</span>
@@ -363,12 +444,12 @@ export default function Home() {
               <textarea
                 rows={5}
                 placeholder="例：リビングの壁紙を張り替えたい、外壁の塗装が剥がれてきた、など"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors resize-none"
+                className="w-full border border-stone-200 rounded-lg px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors resize-none"
               />
             </div>
             <button
               type="submit"
-              className="w-full py-4 rounded-xl bg-amber-700 hover:bg-amber-600 text-white font-bold text-base transition-all shadow-md hover:shadow-amber-200 hover:-translate-y-0.5"
+              className="w-full py-4 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-black text-base transition-colors"
             >
               送信する →
             </button>
@@ -378,24 +459,45 @@ export default function Home() {
 
       {/* ── フッター ── */}
       <footer className="bg-stone-900 text-stone-400 py-12 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <p className="text-white font-black text-xl mb-2">
+            <p className="text-white font-black text-lg mb-1">
               株式会社<span className="text-amber-500">戸根</span>
             </p>
-            <p className="text-sm">創業50年。地域に根ざしたリフォーム・工務店。</p>
+            <p className="text-xs mb-3">TONE REFORM</p>
+            <p className="text-sm leading-relaxed">創業50年。地域に根ざした<br />リフォーム・工務店。</p>
           </div>
-          <div className="flex flex-col gap-1 text-sm">
-            <a href="#services" className="hover:text-white transition-colors">事業内容</a>
-            <a href="#works" className="hover:text-white transition-colors">施工例</a>
-            <a href="#about" className="hover:text-white transition-colors">会社概要</a>
-            <a href="#contact" className="hover:text-white transition-colors">お問い合わせ</a>
+          <div>
+            <p className="text-white font-bold text-sm mb-3">サイトマップ</p>
+            <div className="space-y-1.5 text-sm">
+              {NAV_LINKS.map(({ href, label }) => (
+                <a key={label} href={href} className="block hover:text-white transition-colors">{label}</a>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-white font-bold text-sm mb-3">お問い合わせ</p>
+            <p className="text-2xl font-black text-white mb-1">00-0000-0000</p>
+            <p className="text-xs mb-4">月〜土 8:00〜18:00（日祝応相談）</p>
+            <a href="#contact" className="inline-block px-4 py-2 bg-amber-600 text-white text-sm font-bold rounded hover:bg-amber-500 transition-colors">
+              メールで相談
+            </a>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-stone-800 text-center text-xs">
+        <div className="max-w-6xl mx-auto pt-6 border-t border-stone-800 text-center text-xs">
           © 2024 株式会社戸根. All rights reserved.
         </div>
       </footer>
+
+      {/* ── 固定CTAボタン（スマホ） ── */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex border-t border-stone-200">
+        <a href="tel:0000000000" className="flex-1 py-4 bg-stone-800 text-white text-xs font-bold text-center">
+          📞 電話する
+        </a>
+        <a href="#contact" className="flex-1 py-4 bg-amber-600 text-white text-xs font-bold text-center">
+          ✉ 無料相談
+        </a>
+      </div>
     </div>
   );
 }

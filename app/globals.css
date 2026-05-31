@@ -2,40 +2,43 @@
 
 :root {
   --font-sans: var(--font-noto), sans-serif;
+  --color-primary: #c17f24;
+  --color-primary-dark: #9a6419;
 }
 
 /* スクロールアニメーション */
 .fade-up {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-
 .fade-up.visible {
   opacity: 1;
   transform: translateY(0);
 }
-
 .fade-up-delay-1 { transition-delay: 0.1s; }
 .fade-up-delay-2 { transition-delay: 0.2s; }
 .fade-up-delay-3 { transition-delay: 0.3s; }
 .fade-up-delay-4 { transition-delay: 0.4s; }
 
-/* スライドショー */
-@keyframes slideIn {
-  from { opacity: 0; transform: scale(1.04); }
-  to   { opacity: 1; transform: scale(1); }
+/* ヒーロースライダー */
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
+}
+.hero-slide {
+  animation: kenburns 6s ease-in-out forwards;
 }
 
-.slide-active {
-  animation: slideIn 0.8s ease forwards;
+/* ヘッダー影 */
+.header-shadow {
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
 }
 
 /* iOS Safariフォームズーム防止 */
 input, textarea, select {
   font-size: 16px !important;
 }
-
 body {
   -webkit-tap-highlight-color: transparent;
 }
