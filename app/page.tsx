@@ -219,41 +219,36 @@ export default function Home() {
     <div className="min-h-screen bg-white text-stone-800">
 
       {/* ── ヘッダー ── */}
-      <header className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${scrolled ? "header-shadow" : ""}`}>
-        {/* 上部バー */}
-        <div className="bg-stone-800 text-white text-xs py-2 px-6 hidden md:flex justify-end items-center gap-6">
-          <span>📞 0721-63-4427</span>
-          <span>月〜土 8:00〜18:00（日祝応相談）</span>
-        </div>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white header-shadow" : "bg-transparent"}`}>
         {/* メインナビ */}
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex flex-col leading-tight">
-            <span className="text-xl font-black text-stone-800">株式会社<span className="text-amber-600">戸根</span></span>
-            <span className="text-xs text-stone-400 font-medium tracking-widest">TONE REFORM</span>
+            <span className={`text-xl font-black transition-colors ${scrolled ? "text-stone-800" : "text-white"}`}>
+              株式会社<span className="text-amber-500">戸根</span>
+            </span>
+            <span className={`text-xs font-medium tracking-widest transition-colors ${scrolled ? "text-stone-400" : "text-white/70"}`}>TONE REFORM</span>
           </Link>
           {/* PC nav */}
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-stone-600">
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             {NAV_LINKS.map(({ href, label }) => (
-              <a key={label} href={href} className="hover:text-amber-600 transition-colors py-1 border-b-2 border-transparent hover:border-amber-600">
+              <a
+                key={label}
+                href={href}
+                className={`transition-colors py-1 border-b-2 border-transparent hover:border-amber-500 ${scrolled ? "text-stone-600 hover:text-amber-600" : "text-white/90 hover:text-white"}`}
+              >
                 {label}
               </a>
             ))}
           </nav>
-          <a
-            href="#contact"
-            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded bg-amber-600 text-white font-bold text-sm hover:bg-amber-500 transition-colors"
-          >
-            無料お見積り
-          </a>
           {/* ハンバーガー */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden w-11 h-11 flex flex-col justify-center items-center gap-1.5"
             aria-label="メニュー"
           >
-            <span className={`block w-6 h-0.5 bg-stone-800 transition-all ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-            <span className={`block w-6 h-0.5 bg-stone-800 transition-all ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`block w-6 h-0.5 bg-stone-800 transition-all ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+            <span className={`block w-6 h-0.5 transition-all ${scrolled ? "bg-stone-800" : "bg-white"} ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`block w-6 h-0.5 transition-all ${scrolled ? "bg-stone-800" : "bg-white"} ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-6 h-0.5 transition-all ${scrolled ? "bg-stone-800" : "bg-white"} ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
           </button>
         </div>
         {/* モバイルメニュー */}
@@ -272,7 +267,7 @@ export default function Home() {
       </header>
 
       {/* ── ヒーロースライダー ── */}
-      <section className="relative h-screen max-h-[680px] min-h-[500px] overflow-hidden mt-[57px] md:mt-[89px]">
+      <section className="relative h-screen min-h-[600px] overflow-hidden">
         <div key={key} className="hero-slide w-full h-full relative overflow-hidden">
           {/* Before：左側・モノクロ */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -281,8 +276,8 @@ export default function Home() {
             alt="Before"
             className="absolute inset-0 w-full h-full object-cover"
             style={{
-              filter: "grayscale(100%) brightness(0.75)",
-              clipPath: "polygon(0 0, 54% 0, 46% 100%, 0 100%)",
+              filter: "grayscale(100%) brightness(0.65)",
+              clipPath: "polygon(0 0, 52% 0, 42% 100%, 0 100%)",
             }}
           />
           {/* After：右側・カラー */}
@@ -291,62 +286,94 @@ export default function Home() {
             src={HERO_SLIDES[current].after}
             alt="After"
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ clipPath: "polygon(54% 0, 100% 0, 100% 100%, 46% 100%)" }}
+            style={{ clipPath: "polygon(52% 0, 100% 0, 100% 100%, 42% 100%)" }}
           />
           {/* 斜め白ライン */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: "linear-gradient(to bottom right, transparent calc(50% - 2px), white calc(50% - 2px), white calc(50% + 2px), transparent calc(50% + 2px))",
+              background: "linear-gradient(to bottom, transparent calc(47% - 2px), rgba(255,255,255,0.9) calc(47% - 2px), rgba(255,255,255,0.9) calc(47% + 2px), transparent calc(47% + 2px))",
+              transform: "skewY(-8deg)",
+              transformOrigin: "left center",
             }}
           />
           {/* BEFOREラベル */}
-          <div className="absolute bottom-10 left-6 md:left-16">
-            <p className="font-black tracking-widest text-white"
-              style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)", textShadow: "0 2px 16px rgba(0,0,0,0.8)" }}>
+          <div className="absolute bottom-12 left-8 md:left-16">
+            <p
+              className="font-black tracking-widest text-white"
+              style={{ fontSize: "clamp(3rem, 8vw, 7rem)", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}
+            >
               BEFORE
             </p>
           </div>
           {/* AFTERラベル */}
-          <div className="absolute bottom-10 right-6 md:right-16 text-right">
-            <p className="font-black tracking-widest text-white"
-              style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)", textShadow: "0 2px 16px rgba(0,0,0,0.5)" }}>
+          <div className="absolute bottom-12 right-8 md:right-16 text-right">
+            <p
+              className="font-black tracking-widest text-white"
+              style={{ fontSize: "clamp(3rem, 8vw, 7rem)", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}
+            >
               AFTER
             </p>
           </div>
-          {/* 中央オーバーレイテキスト */}
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col items-center text-center px-6">
-            <span className="bg-amber-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-3 tracking-widest shadow-lg">
-              {HERO_SLIDES[current].label}
-            </span>
-            <h1 className="text-2xl md:text-4xl font-black text-white leading-tight drop-shadow-xl mb-2">
-              リフォームで、暮らしが変わる。
-            </h1>
-            <p className="text-white/80 text-sm md:text-base drop-shadow mb-6">
-              創業50年 ── 地域に根ざした確かな技術
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a href="#contact" className="px-6 py-3 bg-amber-500 text-white font-bold rounded hover:bg-amber-400 transition-colors shadow-lg text-sm">
-                無料お見積りはこちら
-              </a>
-              <a href="#works" className="px-6 py-3 border-2 border-white text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm backdrop-blur-sm">
-                施工事例を見る
-              </a>
+
+          {/* 営業時間インフォボックス（右下） */}
+          <div className="absolute bottom-28 md:bottom-16 right-4 md:right-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl p-4 w-52 hidden md:block">
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className="text-amber-600 text-base">📣</span>
+              <span className="text-amber-600 font-bold text-sm italic">information</span>
             </div>
+            <div className="space-y-0.5 text-xs text-stone-700 mb-2">
+              {[
+                { day: "月曜日", time: "9:00〜18:00" },
+                { day: "火曜日", time: "9:00〜18:00" },
+                { day: "水曜日", time: "定休日", closed: true },
+                { day: "木曜日", time: "9:00〜18:00" },
+                { day: "金曜日", time: "9:00〜18:00" },
+                { day: "土曜日", time: "10:00〜18:00" },
+                { day: "日曜日", time: "10:00〜17:00" },
+              ].map(({ day, time, closed }) => (
+                <div key={day} className="flex justify-between gap-3">
+                  <span className={closed ? "text-red-400 font-medium" : ""}>{day}</span>
+                  <span className={closed ? "text-red-400 font-medium" : ""}>{time}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-stone-500 border-t border-stone-100 pt-2">営業時間のご案内</p>
           </div>
         </div>
-        {/* ドット */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+
+        {/* スライダードット */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
           {HERO_SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => go(i)}
-              className={`rounded-full transition-all ${i === current ? "w-8 h-2.5 bg-amber-600" : "w-2.5 h-2.5 bg-white/60 hover:bg-white"}`}
+              className={`rounded-full transition-all ${i === current ? "w-8 h-2.5 bg-amber-500" : "w-2.5 h-2.5 bg-white/60 hover:bg-white"}`}
               aria-label={`スライド${i + 1}`}
             />
           ))}
         </div>
       </section>
+
+      {/* ── 固定CTAボタン（右下・PC） ── */}
+      <div className="hidden md:flex fixed bottom-0 right-0 z-40 flex-col">
+        <a
+          href="tel:0721634427"
+          className="flex items-center gap-3 px-6 py-4 bg-amber-600 hover:bg-amber-500 text-white transition-colors"
+        >
+          <span className="text-xl">📞</span>
+          <div>
+            <p className="font-black text-lg leading-none">0721-63-4427</p>
+            <p className="text-xs text-amber-100 mt-0.5">営業時間 9:00〜18:00</p>
+          </div>
+        </a>
+        <a
+          href="#contact"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-stone-800 hover:bg-stone-700 text-white text-sm font-bold transition-colors"
+        >
+          ✉ お問い合わせ
+        </a>
+      </div>
 
       {/* ── CTAバナー ── */}
       <section className="bg-amber-600 py-8 px-6">
@@ -708,7 +735,7 @@ export default function Home() {
 
       {/* ── 固定CTAボタン（スマホ） ── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex border-t border-stone-200">
-        <a href="tel:0000000000" className="flex-1 py-4 bg-stone-800 text-white text-xs font-bold text-center">
+        <a href="tel:0721634427" className="flex-1 py-4 bg-stone-800 text-white text-xs font-bold text-center">
           📞 電話する
         </a>
         <a href="#contact" className="flex-1 py-4 bg-amber-600 text-white text-xs font-bold text-center">
