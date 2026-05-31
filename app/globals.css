@@ -22,13 +22,7 @@
 .fade-up-delay-4 { transition-delay: 0.4s; }
 
 /* ヒーロースライダー */
-@keyframes kenburns {
-  from { transform: scale(1); }
-  to   { transform: scale(1.06); }
-}
-.hero-slide {
-  animation: kenburns 6s ease-in-out forwards;
-}
+.hero-slide {}
 
 /* ヘッダー影 */
 .header-shadow {
