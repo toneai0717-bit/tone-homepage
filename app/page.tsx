@@ -183,10 +183,37 @@ export default function Home() {
   const { current, key, go } = useHeroSlider(HERO_SLIDES.length);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("すべて");
+  const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
+  const [sending, setSending] = useState(false);
+  const [sendStatus, setSendStatus] = useState<"idle" | "success" | "error">("idle");
 
   const filteredWorks = activeCategory === "すべて"
     ? WORKS
     : WORKS.filter((w) => w.category === activeCategory);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name.trim() || !formData.message.trim()) return;
+    setSending(true);
+    setSendStatus("idle");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        setSendStatus("success");
+        setFormData({ name: "", phone: "", email: "", message: "" });
+      } else {
+        setSendStatus("error");
+      }
+    } catch {
+      setSendStatus("error");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white text-stone-800">
@@ -545,23 +572,40 @@ export default function Home() {
             <h2 className="text-3xl font-black text-white">お問い合わせ・無料お見積り</h2>
             <p className="text-amber-100 mt-3 text-sm">お気軽にご相談ください。通常2営業日以内にご返信します。</p>
           </div>
-          <form className="bg-white rounded-2xl p-8 space-y-4 fade-up">
-            {[
-              { label: "お名前", type: "text", placeholder: "山田 太郎", required: true },
-              { label: "電話番号", type: "tel", placeholder: "090-0000-0000", required: false },
-              { label: "メールアドレス", type: "email", placeholder: "example@mail.com", required: false },
-            ].map(({ label, type, placeholder, required }) => (
-              <div key={label}>
-                <label className="block text-sm font-semibold text-stone-700 mb-1.5">
-                  {label} {required && <span className="text-red-400">*</span>}
-                </label>
-                <input
-                  type={type}
-                  placeholder={placeholder}
-                  className="w-full border border-stone-200 rounded-lg px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors"
-                />
-              </div>
-            ))}
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 space-y-4 fade-up">
+            <div>
+              <label className="block text-sm font-semibold text-stone-700 mb-1.5">
+                お名前 <span className="text-red-400">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="山田 太郎"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+                className="w-full border border-stone-200 rounded-lg px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-stone-700 mb-1.5">電話番号</label>
+              <input
+                type="tel"
+                placeholder="0721-63-4427"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="w-full border border-stone-200 rounded-lg px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-stone-700 mb-1.5">メールアドレス</label>
+              <input
+                type="email"
+                placeholder="example@mail.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full border border-stone-200 rounded-lg px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors"
+              />
+            </div>
             <div>
               <label className="block text-sm font-semibold text-stone-700 mb-1.5">
                 ご相談内容 <span className="text-red-400">*</span>
@@ -569,14 +613,28 @@ export default function Home() {
               <textarea
                 rows={5}
                 placeholder="例：リビングの壁紙を張り替えたい、外壁の塗装が剥がれてきた、など"
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                required
                 className="w-full border border-stone-200 rounded-lg px-4 py-3 text-stone-800 placeholder-stone-300 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-colors resize-none"
               />
             </div>
+            {sendStatus === "success" && (
+              <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-green-700 text-sm font-medium">
+                ✅ 送信完了しました！近日中にご連絡いたします。
+              </div>
+            )}
+            {sendStatus === "error" && (
+              <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-red-600 text-sm font-medium">
+                ❌ 送信に失敗しました。お電話にてご連絡ください。
+              </div>
+            )}
             <button
               type="submit"
-              className="w-full py-4 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-black text-base transition-colors"
+              disabled={sending}
+              className="w-full py-4 rounded-lg bg-amber-600 hover:bg-amber-500 disabled:bg-stone-300 text-white font-black text-base transition-colors"
             >
-              送信する →
+              {sending ? "送信中..." : "送信する →"}
             </button>
           </form>
         </div>
