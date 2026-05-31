@@ -14,18 +14,18 @@ const NAV_LINKS = [
 
 const HERO_SLIDES = [
   {
-    before: "https://images.unsplash.com/photo-1558869632-279458ac1734?w=1200&q=80",
-    after:  "https://images.unsplash.com/photo-1610333684078-c89bd57f2e46?w=1200&q=80",
+    before: "/images/Living before.png",
+    after:  "/images/Living after.png",
     label: "リビングリフォーム",
   },
   {
-    before: "https://images.unsplash.com/photo-1533540499377-cf2dec26c3d7?w=1200&q=80",
-    after:  "https://images.unsplash.com/photo-1604578762246-41134e37f9cc?w=1200&q=80",
+    before: "/images/Kitchen before.png",
+    after:  "/images/Kitchen after.png",
     label: "キッチンリフォーム",
   },
   {
-    before: "https://images.unsplash.com/photo-1566204978576-77f6addcef4d?w=1200&q=80",
-    after:  "https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=1200&q=80",
+    before: "/images/Exterior before.png",
+    after:  "/images/Exterior after.png",
     label: "外装リフォーム",
   },
 ];
@@ -75,22 +75,22 @@ const WORKS = [
 const BEFORE_AFTERS = [
   {
     label: "リビング",
-    before: "https://images.unsplash.com/photo-1724336191754-638eb5cbaa46?w=700&q=80",
-    after:  "https://images.unsplash.com/photo-1595880275563-f9a6e74b0a8c?w=700&q=80",
+    before: "/images/Living before.png",
+    after:  "/images/Living after.png",
     title: "LDKを明るく広々リフォーム",
     desc: "古い内装を一新。白を基調としたモダンな空間に生まれ変わりました。",
   },
   {
     label: "キッチン",
-    before: "https://images.unsplash.com/photo-1625668751669-65ceebd81e34?w=700&q=80",
-    after:  "https://images.unsplash.com/photo-1538128844159-f08f41bfb169?w=700&q=80",
+    before: "/images/Kitchen before.png",
+    after:  "/images/Kitchen after.png",
     title: "システムキッチン全面リフォーム",
     desc: "使いにくかった古いキッチンを、最新のシステムキッチンに交換しました。",
   },
   {
     label: "外装",
-    before: "https://images.unsplash.com/photo-1560664394-cf43a5e45907?w=700&q=80",
-    after:  "https://images.unsplash.com/photo-1504698059244-3a4c4efc4c80?w=700&q=80",
+    before: "/images/Exterior before.png",
+    after:  "/images/Exterior after.png",
     title: "外壁塗装＋防水工事",
     desc: "汚れや劣化が目立っていた外壁を塗り直し、見違えるような仕上がりに。",
   },
