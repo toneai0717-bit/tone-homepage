@@ -14,19 +14,19 @@ const NAV_LINKS = [
 
 const HERO_SLIDES = [
   {
-    img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=80",
-    headline: "住まいの困ったを、\nすぐに解決。",
-    sub: "内装・外装・水回りリフォームまで丁寧にサポート",
+    before: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=1200&q=80",
+    after:  "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80",
+    label: "キッチンリフォーム",
   },
   {
-    img: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1600&q=80",
-    headline: "創業50年の\n確かな技術と信頼。",
-    sub: "地域に寄り添い、一軒一軒を大切に施工します",
+    before: "https://images.unsplash.com/photo-1493606278519-11aa9f86e40a?w=1200&q=80",
+    after:  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80",
+    label: "リビングリフォーム",
   },
   {
-    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80",
-    headline: "困ったらすぐ\n駆けつけます。",
-    sub: "お気軽にご相談ください。無料でお見積りします",
+    before: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&q=80",
+    after:  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+    label: "外装リフォーム",
   },
 ];
 
@@ -273,31 +273,62 @@ export default function Home() {
 
       {/* ── ヒーロースライダー ── */}
       <section className="relative h-screen max-h-[680px] min-h-[500px] overflow-hidden mt-[57px] md:mt-[89px]">
-        <div key={key} className="hero-slide w-full h-full relative">
-          {/* 背景写真 */}
+        <div key={key} className="hero-slide w-full h-full relative overflow-hidden">
+          {/* Before（左・モノクロ） */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={HERO_SLIDES[current].img}
-            alt=""
+            src={HERO_SLIDES[current].before}
+            alt="Before"
             className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: "grayscale(100%) brightness(0.7)" }}
           />
-          {/* オーバーレイ */}
-          <div className="absolute inset-0 bg-black/45" />
-          {/* テキスト */}
-          <div className="relative h-full flex items-center justify-center text-center px-6">
-            <div>
-              <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mb-4 whitespace-pre-line drop-shadow-lg">
-                {HERO_SLIDES[current].headline}
-              </h1>
-              <p className="text-white/80 text-base md:text-lg mb-8 drop-shadow">{HERO_SLIDES[current].sub}</p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a href="#contact" className="px-8 py-4 bg-amber-500 text-white font-bold rounded hover:bg-amber-400 transition-colors shadow-lg">
-                  無料お見積りはこちら
-                </a>
-                <a href="#works" className="px-8 py-4 border-2 border-white text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors">
-                  施工事例を見る
-                </a>
-              </div>
+          {/* After（右・カラー）をclip-pathで右半分だけ表示 */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={HERO_SLIDES[current].after}
+            alt="After"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ clipPath: "polygon(48% 0%, 100% 0%, 100% 100%, 52% 100%)" }}
+          />
+          {/* 斜め境界線 */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "linear-gradient(to bottom right, transparent 49.5%, white 49.5%, white 50.5%, transparent 50.5%)",
+            }}
+          />
+          {/* BEFOREラベル */}
+          <div className="absolute bottom-8 left-6 md:left-12">
+            <p className="text-white font-black tracking-widest drop-shadow-lg"
+              style={{ fontSize: "clamp(2rem, 6vw, 5rem)", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>
+              BEFORE
+            </p>
+          </div>
+          {/* AFTERラベル */}
+          <div className="absolute bottom-8 right-6 md:right-12 text-right">
+            <p className="text-white font-black tracking-widest drop-shadow-lg"
+              style={{ fontSize: "clamp(2rem, 6vw, 5rem)", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>
+              AFTER
+            </p>
+          </div>
+          {/* 中央テキスト */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pb-24">
+            <span className="bg-amber-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow">
+              {HERO_SLIDES[current].label}
+            </span>
+            <h1 className="text-2xl md:text-4xl font-black text-white drop-shadow-lg leading-tight">
+              リフォームで、暮らしが変わる。
+            </h1>
+            <p className="text-white/80 text-sm md:text-base mt-2 drop-shadow mb-6">
+              創業50年 ── 地域に根ざした確かな技術
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a href="#contact" className="px-6 py-3 bg-amber-500 text-white font-bold rounded hover:bg-amber-400 transition-colors shadow-lg text-sm">
+                無料お見積りはこちら
+              </a>
+              <a href="#works" className="px-6 py-3 border-2 border-white text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm">
+                施工事例を見る
+              </a>
             </div>
           </div>
         </div>
