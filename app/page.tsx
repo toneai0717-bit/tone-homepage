@@ -14,18 +14,18 @@ const NAV_LINKS = [
 
 const HERO_SLIDES = [
   {
-    before: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=1200&q=80",
-    after:  "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80",
-    label: "キッチンリフォーム",
-  },
-  {
-    before: "https://images.unsplash.com/photo-1493606278519-11aa9f86e40a?w=1200&q=80",
-    after:  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80",
+    before: "https://images.unsplash.com/photo-1558869632-279458ac1734?w=1200&q=80",
+    after:  "https://images.unsplash.com/photo-1610333684078-c89bd57f2e46?w=1200&q=80",
     label: "リビングリフォーム",
   },
   {
-    before: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&q=80",
-    after:  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+    before: "https://images.unsplash.com/photo-1533540499377-cf2dec26c3d7?w=1200&q=80",
+    after:  "https://images.unsplash.com/photo-1604578762246-41134e37f9cc?w=1200&q=80",
+    label: "キッチンリフォーム",
+  },
+  {
+    before: "https://images.unsplash.com/photo-1566204978576-77f6addcef4d?w=1200&q=80",
+    after:  "https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=1200&q=80",
     label: "外装リフォーム",
   },
 ];
@@ -48,49 +48,49 @@ const WORK_CATEGORIES = [
 const WORKS = [
   {
     category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円",
-    img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80",
+    img: "https://images.unsplash.com/photo-1612014449419-ac12de2f2181?w=600&q=80",
   },
   {
     category: "キッチン", title: "システムキッチン入れ替え", price: "85万円",
-    img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
+    img: "https://images.unsplash.com/photo-1622892795233-285d239877ea?w=600&q=80",
   },
   {
     category: "浴室", title: "ユニットバスまるごと交換", price: "95万円",
-    img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=80",
+    img: "https://images.unsplash.com/photo-1587023705112-34a9b4fe8317?w=600&q=80",
   },
   {
     category: "外壁", title: "外壁塗装＋防水工事", price: "75万円",
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+    img: "https://images.unsplash.com/photo-1570640524401-7be7b14c7079?w=600&q=80",
   },
   {
     category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円",
-    img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80",
+    img: "https://images.unsplash.com/photo-1577790668485-b3e70d84b462?w=600&q=80",
   },
   {
     category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円",
-    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80",
+    img: "https://images.unsplash.com/photo-1632790929202-a79cd10d9076?w=600&q=80",
   },
 ];
 
 const BEFORE_AFTERS = [
   {
     label: "リビング",
-    before: "https://images.unsplash.com/photo-1493606278519-11aa9f86e40a?w=700&q=80",
-    after:  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80",
+    before: "https://images.unsplash.com/photo-1724336191754-638eb5cbaa46?w=700&q=80",
+    after:  "https://images.unsplash.com/photo-1595880275563-f9a6e74b0a8c?w=700&q=80",
     title: "LDKを明るく広々リフォーム",
     desc: "古い内装を一新。白を基調としたモダンな空間に生まれ変わりました。",
   },
   {
     label: "キッチン",
-    before: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=700&q=80",
-    after:  "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80",
+    before: "https://images.unsplash.com/photo-1625668751669-65ceebd81e34?w=700&q=80",
+    after:  "https://images.unsplash.com/photo-1538128844159-f08f41bfb169?w=700&q=80",
     title: "システムキッチン全面リフォーム",
     desc: "使いにくかった古いキッチンを、最新のシステムキッチンに交換しました。",
   },
   {
-    label: "外壁",
-    before: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=700&q=80",
-    after:  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=80",
+    label: "外装",
+    before: "https://images.unsplash.com/photo-1560664394-cf43a5e45907?w=700&q=80",
+    after:  "https://images.unsplash.com/photo-1504698059244-3a4c4efc4c80?w=700&q=80",
     title: "外壁塗装＋防水工事",
     desc: "汚れや劣化が目立っていた外壁を塗り直し、見違えるような仕上がりに。",
   },
@@ -397,7 +397,7 @@ export default function Home() {
               <div className="w-full aspect-video rounded-2xl overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80"
+                  src="https://images.unsplash.com/photo-1669612803668-2b2a770f9890?w=800&q=80"
                   alt="リフォームイメージ"
                   className="w-full h-full object-cover"
                 />
