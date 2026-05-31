@@ -171,7 +171,7 @@ export default function Home() {
       <header className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${scrolled ? "header-shadow" : ""}`}>
         {/* 上部バー */}
         <div className="bg-stone-800 text-white text-xs py-2 px-6 hidden md:flex justify-end items-center gap-6">
-          <span>📞 00-0000-0000</span>
+          <span>📞 0721-63-4427</span>
           <span>月〜土 8:00〜18:00（日祝応相談）</span>
         </div>
         {/* メインナビ */}
@@ -272,7 +272,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="tel:0000000000" className="px-6 py-3 bg-white text-amber-600 font-black rounded text-sm hover:bg-amber-50 transition-colors whitespace-nowrap">
-              📞 00-0000-0000
+              📞 0721-63-4427
             </a>
             <a href="#contact" className="px-6 py-3 border-2 border-white text-white font-bold rounded text-sm hover:bg-white hover:text-amber-600 transition-colors whitespace-nowrap">
               メールで相談
@@ -438,9 +438,8 @@ export default function Home() {
               { label: "設立", value: "創業50年" },
               { label: "事業内容", value: "内装工事・外装工事・水回りリフォーム・リノベーション" },
               { label: "営業時間", value: "月〜土 8:00〜18:00（日祝応相談）" },
-              { label: "電話番号", value: "00-0000-0000" },
-              { label: "対応エリア", value: "地域密着型（詳細はお問い合わせください）" },
-              { label: "SNS", value: "Instagram / LINE" },
+              { label: "電話番号", value: "0721-63-4427" },
+              { label: "対応エリア", value: "日本全国対応" },
             ].map(({ label, value }, i) => (
               <div key={label} className={`flex flex-col sm:flex-row px-6 py-4 gap-2 ${i % 2 === 0 ? "bg-white" : "bg-stone-50"}`}>
                 <span className="text-stone-500 text-sm font-semibold w-36 shrink-0">{label}</span>
@@ -516,7 +515,7 @@ export default function Home() {
           </div>
           <div>
             <p className="text-white font-bold text-sm mb-3">お問い合わせ</p>
-            <p className="text-2xl font-black text-white mb-1">00-0000-0000</p>
+            <p className="text-2xl font-black text-white mb-1">0721-63-4427</p>
             <p className="text-xs mb-4">月〜土 8:00〜18:00（日祝応相談）</p>
             <a href="#contact" className="inline-block px-4 py-2 bg-amber-600 text-white text-sm font-bold rounded hover:bg-amber-500 transition-colors">
               メールで相談
@@ -524,7 +523,7 @@ export default function Home() {
           </div>
         </div>
         <div className="max-w-6xl mx-auto pt-6 border-t border-stone-800 text-center text-xs">
-          © 2024 株式会社戸根. All rights reserved.
+          © 2026 株式会社戸根. All rights reserved.
         </div>
       </footer>
 
