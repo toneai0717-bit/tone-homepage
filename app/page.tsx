@@ -277,7 +277,7 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover"
             style={{
               filter: "grayscale(100%) brightness(0.65)",
-              clipPath: "polygon(0 0, 52% 0, 42% 100%, 0 100%)",
+              clipPath: "polygon(0 0, 33% 0, 27% 100%, 0 100%)",
             }}
           />
           {/* After：右側・カラー */}
@@ -286,7 +286,7 @@ export default function Home() {
             src={HERO_SLIDES[current].after}
             alt="After"
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ clipPath: "polygon(52% 0, 100% 0, 100% 100%, 42% 100%)" }}
+            style={{ clipPath: "polygon(33% 0, 100% 0, 100% 100%, 27% 100%)" }}
           />
           {/* BEFOREラベル */}
           <div className="absolute bottom-12 left-8 md:left-16">
