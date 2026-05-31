@@ -48,27 +48,27 @@ const WORK_CATEGORIES = [
 const WORKS = [
   {
     category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円",
-    img: "https://images.unsplash.com/photo-1612014449419-ac12de2f2181?w=600&q=80",
+    img: "/images/Living after.png",
   },
   {
     category: "キッチン", title: "システムキッチン入れ替え", price: "85万円",
-    img: "https://images.unsplash.com/photo-1622892795233-285d239877ea?w=600&q=80",
+    img: "/images/Kitchen after.png",
   },
   {
     category: "浴室", title: "ユニットバスまるごと交換", price: "95万円",
-    img: "https://images.unsplash.com/photo-1587023705112-34a9b4fe8317?w=600&q=80",
+    img: "/images/Bathroom.webp",
   },
   {
     category: "外壁", title: "外壁塗装＋防水工事", price: "75万円",
-    img: "https://images.unsplash.com/photo-1570640524401-7be7b14c7079?w=600&q=80",
+    img: "/images/Exterior after.png",
   },
   {
     category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円",
-    img: "https://images.unsplash.com/photo-1577790668485-b3e70d84b462?w=600&q=80",
+    img: "/images/Roof after.png",
   },
   {
     category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円",
-    img: "https://images.unsplash.com/photo-1632790929202-a79cd10d9076?w=600&q=80",
+    img: "/images/fully renovated modern Japanese house after.png",
   },
 ];
 
