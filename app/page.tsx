@@ -72,6 +72,30 @@ const WORKS = [
   },
 ];
 
+const BEFORE_AFTERS = [
+  {
+    label: "リビング",
+    before: "https://images.unsplash.com/photo-1493606278519-11aa9f86e40a?w=700&q=80",
+    after:  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80",
+    title: "LDKを明るく広々リフォーム",
+    desc: "古い内装を一新。白を基調としたモダンな空間に生まれ変わりました。",
+  },
+  {
+    label: "キッチン",
+    before: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=700&q=80",
+    after:  "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80",
+    title: "システムキッチン全面リフォーム",
+    desc: "使いにくかった古いキッチンを、最新のシステムキッチンに交換しました。",
+  },
+  {
+    label: "外壁",
+    before: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=700&q=80",
+    after:  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=80",
+    title: "外壁塗装＋防水工事",
+    desc: "汚れや劣化が目立っていた外壁を塗り直し、見違えるような仕上がりに。",
+  },
+];
+
 const VOICES = [
   {
     name: "K.Mさん（40代・女性）",
@@ -326,6 +350,69 @@ export default function Home() {
                 会社情報を見る →
               </a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Before / After ── */}
+      <section className="py-20 px-6 bg-stone-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">BEFORE / AFTER</p>
+            <h2 className="text-3xl font-black text-stone-800">施工前後の比較</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
+            <p className="text-stone-500 text-sm mt-4">リフォームでここまで変わります</p>
+          </div>
+          <div className="space-y-16">
+            {BEFORE_AFTERS.map(({ label, before, after, title, desc }, i) => (
+              <div key={i} className="fade-up">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">{label}</span>
+                  <h3 className="font-black text-stone-800 text-lg">{title}</h3>
+                </div>
+                <div className="grid grid-cols-2 gap-3 md:gap-6">
+                  {/* Before */}
+                  <div className="rounded-2xl overflow-hidden shadow-md">
+                    <div className="relative aspect-video">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={before}
+                        alt="Before"
+                        className="w-full h-full object-cover"
+                        style={{ filter: "brightness(0.6) saturate(0.4) sepia(0.4)" }}
+                      />
+                      <div className="absolute inset-0 bg-stone-900/20" />
+                      <span className="absolute top-3 left-3 bg-stone-800 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest">BEFORE</span>
+                    </div>
+                    <div className="bg-stone-100 px-4 py-2.5">
+                      <p className="text-xs text-stone-500 font-medium">施工前</p>
+                    </div>
+                  </div>
+                  {/* After */}
+                  <div className="rounded-2xl overflow-hidden shadow-md">
+                    <div className="relative aspect-video">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={after}
+                        alt="After"
+                        className="w-full h-full object-cover"
+                        style={{ filter: "brightness(1.05) saturate(1.1)" }}
+                      />
+                      <span className="absolute top-3 left-3 bg-amber-500 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest">AFTER</span>
+                    </div>
+                    <div className="bg-amber-50 px-4 py-2.5">
+                      <p className="text-xs text-amber-700 font-medium">施工後</p>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-stone-500 text-sm mt-3 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-12 fade-up">
+            <a href="#contact" className="inline-block px-8 py-4 bg-amber-600 text-white font-bold rounded hover:bg-amber-500 transition-colors shadow-md">
+              あなたのお家もご相談ください →
+            </a>
           </div>
         </div>
       </section>
