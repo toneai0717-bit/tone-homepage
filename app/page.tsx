@@ -274,59 +274,62 @@ export default function Home() {
       {/* ── ヒーロースライダー ── */}
       <section className="relative h-screen max-h-[680px] min-h-[500px] overflow-hidden mt-[57px] md:mt-[89px]">
         <div key={key} className="hero-slide w-full h-full relative overflow-hidden">
-          {/* Before（左・モノクロ） */}
+          {/* Before：左側・モノクロ */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={HERO_SLIDES[current].before}
             alt="Before"
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ filter: "grayscale(100%) brightness(0.7)" }}
+            style={{
+              filter: "grayscale(100%) brightness(0.75)",
+              clipPath: "polygon(0 0, 54% 0, 46% 100%, 0 100%)",
+            }}
           />
-          {/* After（右・カラー）をclip-pathで右半分だけ表示 */}
+          {/* After：右側・カラー */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={HERO_SLIDES[current].after}
             alt="After"
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ clipPath: "polygon(48% 0%, 100% 0%, 100% 100%, 52% 100%)" }}
+            style={{ clipPath: "polygon(54% 0, 100% 0, 100% 100%, 46% 100%)" }}
           />
-          {/* 斜め境界線 */}
+          {/* 斜め白ライン */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: "linear-gradient(to bottom right, transparent 49.5%, white 49.5%, white 50.5%, transparent 50.5%)",
+              background: "linear-gradient(to bottom right, transparent calc(50% - 2px), white calc(50% - 2px), white calc(50% + 2px), transparent calc(50% + 2px))",
             }}
           />
           {/* BEFOREラベル */}
-          <div className="absolute bottom-8 left-6 md:left-12">
-            <p className="text-white font-black tracking-widest drop-shadow-lg"
-              style={{ fontSize: "clamp(2rem, 6vw, 5rem)", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>
+          <div className="absolute bottom-10 left-6 md:left-16">
+            <p className="font-black tracking-widest text-white"
+              style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)", textShadow: "0 2px 16px rgba(0,0,0,0.8)" }}>
               BEFORE
             </p>
           </div>
           {/* AFTERラベル */}
-          <div className="absolute bottom-8 right-6 md:right-12 text-right">
-            <p className="text-white font-black tracking-widest drop-shadow-lg"
-              style={{ fontSize: "clamp(2rem, 6vw, 5rem)", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>
+          <div className="absolute bottom-10 right-6 md:right-16 text-right">
+            <p className="font-black tracking-widest text-white"
+              style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)", textShadow: "0 2px 16px rgba(0,0,0,0.5)" }}>
               AFTER
             </p>
           </div>
-          {/* 中央テキスト */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pb-24">
-            <span className="bg-amber-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow">
+          {/* 中央オーバーレイテキスト */}
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col items-center text-center px-6">
+            <span className="bg-amber-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-3 tracking-widest shadow-lg">
               {HERO_SLIDES[current].label}
             </span>
-            <h1 className="text-2xl md:text-4xl font-black text-white drop-shadow-lg leading-tight">
+            <h1 className="text-2xl md:text-4xl font-black text-white leading-tight drop-shadow-xl mb-2">
               リフォームで、暮らしが変わる。
             </h1>
-            <p className="text-white/80 text-sm md:text-base mt-2 drop-shadow mb-6">
+            <p className="text-white/80 text-sm md:text-base drop-shadow mb-6">
               創業50年 ── 地域に根ざした確かな技術
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <a href="#contact" className="px-6 py-3 bg-amber-500 text-white font-bold rounded hover:bg-amber-400 transition-colors shadow-lg text-sm">
                 無料お見積りはこちら
               </a>
-              <a href="#works" className="px-6 py-3 border-2 border-white text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm">
+              <a href="#works" className="px-6 py-3 border-2 border-white text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm backdrop-blur-sm">
                 施工事例を見る
               </a>
             </div>
