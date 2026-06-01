@@ -3,6 +3,52 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 
+// ── 型定義 ────────────────────────────────────────────────
+interface Slide {
+  before: string;
+  after: string;
+  label: string;
+}
+
+interface WorkItem {
+  category: string;
+  title: string;
+  price: string;
+  img: string;
+}
+
+interface BeforeAfterItem {
+  label: string;
+  before: string;
+  after: string;
+  title: string;
+  desc: string;
+}
+
+interface TimelineItem {
+  year: string;
+  title: string;
+  desc: string;
+}
+
+interface VoiceItem {
+  name: string;
+  text: string;
+  stars: number;
+}
+
+interface NewsItem {
+  date: string;
+  label: string;
+  title: string;
+}
+
+interface InquiryOption {
+  id: string;
+  label: string;
+  icon: string;
+}
+
 // ── データ ────────────────────────────────────────────────
 const NAV_LINKS = [
   { href: "#about-us", label: "はじめての方へ" },
@@ -12,7 +58,7 @@ const NAV_LINKS = [
   { href: "#company", label: "会社情報" },
 ];
 
-const HERO_SLIDES = [
+const HERO_SLIDES: Slide[] = [
   {
     before: "/images/Living before.png",
     after:  "/images/Living after.png",
@@ -45,34 +91,16 @@ const WORK_CATEGORIES = [
   { icon: "✨", label: "フルリノベ" },
 ];
 
-const WORKS = [
-  {
-    category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円",
-    img: "/images/Living after.png",
-  },
-  {
-    category: "キッチン", title: "システムキッチン入れ替え", price: "85万円",
-    img: "/images/Kitchen after.png",
-  },
-  {
-    category: "浴室", title: "ユニットバスまるごと交換", price: "95万円",
-    img: "/images/Bathroom.webp",
-  },
-  {
-    category: "外壁", title: "外壁塗装＋防水工事", price: "75万円",
-    img: "/images/Exterior after.png",
-  },
-  {
-    category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円",
-    img: "/images/Roof after.png",
-  },
-  {
-    category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円",
-    img: "/images/fully renovated modern Japanese house after.png",
-  },
+const WORKS: WorkItem[] = [
+  { category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円", img: "/images/Living after.png" },
+  { category: "キッチン", title: "システムキッチン入れ替え", price: "85万円", img: "/images/Kitchen after.png" },
+  { category: "浴室", title: "ユニットバスまるごと交換", price: "95万円", img: "/images/Bathroom.webp" },
+  { category: "外壁", title: "外壁塗装＋防水工事", price: "75万円", img: "/images/Exterior after.png" },
+  { category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円", img: "/images/Roof after.png" },
+  { category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円", img: "/images/fully renovated modern Japanese house after.png" },
 ];
 
-const BEFORE_AFTERS = [
+const BEFORE_AFTERS: BeforeAfterItem[] = [
   {
     label: "リビング",
     before: "/images/Living before.png",
@@ -96,29 +124,47 @@ const BEFORE_AFTERS = [
   },
 ];
 
-const VOICES = [
+const TIMELINE: TimelineItem[] = [
   {
-    name: "K.Mさん（40代・女性）",
-    text: "水回りのリフォームをお願いしました。担当の方がとても丁寧で、細かい要望にも柔軟に対応してくれました。仕上がりも大満足です！",
-    stars: 5,
+    year: "1974年",
+    title: "畳店として創業",
+    desc: "大阪南部にて、先代が畳職人として独立。地域のお客様に支えられながら、丁寧な仕事を積み重ねてきました。",
   },
   {
-    name: "T.Yさん（50代・男性）",
-    text: "外壁塗装をお願いしました。近所の紹介で来ましたが、見積もりから工事まで誠実に対応してもらえて安心でした。また何かあればお願いします。",
-    stars: 5,
+    year: "1990年代",
+    title: "内装業へ進化",
+    desc: "畳で培った職人技を活かし、壁紙・フローリングなど内装全般へと事業を拡大。地域の信頼が広がりました。",
   },
   {
-    name: "A.Sさん（60代・女性）",
-    text: "急な雨漏りの修繕をお願いしました。連絡した翌日に来てくれて本当に助かりました。創業50年の実績は伊達じゃないと感じました。",
-    stars: 5,
+    year: "2000年代",
+    title: "総合リフォームへ",
+    desc: "水回り・外装・増改築まで対応できる総合リフォーム会社として成長。設計から施工まで一貫して担う体制を整えました。",
+  },
+  {
+    year: "現在",
+    title: "創業50年・地域密着の誇り",
+    desc: "1,000件以上の施工実績を誇り、今も「困ったらすぐ来てくれる」を合言葉に地域に根ざした工務店として歩み続けています。",
   },
 ];
 
-const NEWS = [
+const VOICES: VoiceItem[] = [
+  { name: "K.Mさん（40代・女性）", text: "水回りのリフォームをお願いしました。担当の方がとても丁寧で、細かい要望にも柔軟に対応してくれました。仕上がりも大満足です！", stars: 5 },
+  { name: "T.Yさん（50代・男性）", text: "外壁塗装をお願いしました。近所の紹介で来ましたが、見積もりから工事まで誠実に対応してもらえて安心でした。また何かあればお願いします。", stars: 5 },
+  { name: "A.Sさん（60代・女性）", text: "急な雨漏りの修繕をお願いしました。連絡した翌日に来てくれて本当に助かりました。創業50年の実績は伊達じゃないと感じました。", stars: 5 },
+];
+
+const NEWS: NewsItem[] = [
   { date: "2024.05.01", label: "お知らせ", title: "GW期間中の営業についてのご案内" },
   { date: "2024.04.15", label: "お知らせ", title: "春のリフォームキャンペーン実施中！" },
   { date: "2024.03.20", label: "施工事例", title: "N様邸 LDKリフォーム事例を公開しました" },
   { date: "2024.03.01", label: "お知らせ", title: "ホームページをリニューアルしました" },
+];
+
+const INQUIRY_OPTIONS: InquiryOption[] = [
+  { id: "tatami", label: "畳・和室のモダンリノベーション", icon: "🏯" },
+  { id: "wallpaper", label: "壁紙・クロスの張り替え（内装）", icon: "🖼" },
+  { id: "water", label: "水回り（キッチン・お風呂など）", icon: "🚰" },
+  { id: "other", label: "その他・全体的なリフォーム", icon: "🏠" },
 ];
 
 // ── フック ────────────────────────────────────────────────
@@ -175,12 +221,75 @@ function Stars({ count }: { count: number }) {
   );
 }
 
+interface BeforeAfterSliderProps {
+  before: string;
+  after: string;
+  title: string;
+  desc: string;
+  label: string;
+}
+
+function BeforeAfterSlider({ before, after, title, desc, label }: BeforeAfterSliderProps) {
+  const [pos, setPos] = useState(50);
+
+  return (
+    <div className="fade-up">
+      <div className="flex items-center gap-3 mb-4">
+        <span className="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">{label}</span>
+        <h3 className="font-black text-stone-800 text-lg">{title}</h3>
+      </div>
+      <div className="relative rounded-2xl overflow-hidden shadow-md select-none" style={{ aspectRatio: "16/9" }}>
+        {/* After（ベース） */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={after} alt="After" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+        {/* Before（クリップ） */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={before}
+          alt="Before"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+        />
+        {/* ラベル */}
+        <span className="absolute top-3 left-3 bg-stone-800/90 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest z-10 pointer-events-none">BEFORE</span>
+        <span className="absolute top-3 right-3 bg-amber-500/90 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest z-10 pointer-events-none">AFTER</span>
+        {/* 境界線 */}
+        <div
+          className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10 pointer-events-none"
+          style={{ left: `${pos}%` }}
+        />
+        {/* ドラッグハンドル */}
+        <div
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-11 h-11 bg-white rounded-full shadow-xl flex items-center justify-center z-10 pointer-events-none"
+          style={{ left: `${pos}%` }}
+        >
+          <span className="text-stone-600 text-base font-black select-none">⇔</span>
+        </div>
+        {/* 透明rangeスライダー */}
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={pos}
+          onChange={(e) => setPos(Number(e.target.value))}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-col-resize z-20"
+          aria-label="Before/After比較スライダー"
+        />
+      </div>
+      <p className="text-stone-500 text-sm mt-3 leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+// ── メインコンポーネント ───────────────────────────────────
 export default function Home() {
   useFadeUp();
   const scrolled = useHeaderScroll();
   const { current, go } = useHeroSlider(HERO_SLIDES.length);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("すべて");
+  const [inquiryTypes, setInquiryTypes] = useState<string[]>([]);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sendStatus, setSendStatus] = useState<"idle" | "success" | "error">("idle");
@@ -188,6 +297,12 @@ export default function Home() {
   const filteredWorks = activeCategory === "すべて"
     ? WORKS
     : WORKS.filter((w) => w.category === activeCategory);
+
+  const toggleInquiry = (id: string) => {
+    setInquiryTypes((prev) =>
+      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -198,11 +313,12 @@ export default function Home() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, inquiryTypes }),
       });
       if (res.ok) {
         setSendStatus("success");
         setFormData({ name: "", phone: "", email: "", message: "" });
+        setInquiryTypes([]);
       } else {
         setSendStatus("error");
       }
@@ -218,7 +334,6 @@ export default function Home() {
 
       {/* ── ヘッダー ── */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white header-shadow" : "bg-transparent"}`}>
-        {/* メインナビ */}
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex flex-col leading-tight">
             <span className={`text-xl font-black transition-colors ${scrolled ? "text-stone-800" : "text-white"}`}>
@@ -226,7 +341,6 @@ export default function Home() {
             </span>
             <span className={`text-xs font-medium tracking-widest transition-colors ${scrolled ? "text-stone-400" : "text-white/70"}`}>TONE REFORM</span>
           </Link>
-          {/* PC nav */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             {NAV_LINKS.map(({ href, label }) => (
               <a
@@ -238,7 +352,6 @@ export default function Home() {
               </a>
             ))}
           </nav>
-          {/* ハンバーガー */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden w-11 h-11 flex flex-col justify-center items-center gap-1.5"
@@ -249,7 +362,6 @@ export default function Home() {
             <span className={`block w-6 h-0.5 transition-all ${scrolled ? "bg-stone-800" : "bg-white"} ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
           </button>
         </div>
-        {/* モバイルメニュー */}
         {menuOpen && (
           <div className="md:hidden bg-white border-t border-stone-100 px-6 py-4 space-y-3">
             {NAV_LINKS.map(({ href, label }) => (
@@ -266,7 +378,6 @@ export default function Home() {
 
       {/* ── ヒーロースライダー ── */}
       <section className="relative h-[100dvh] min-h-[600px] overflow-hidden">
-        {/* 背景画像スライド */}
         {HERO_SLIDES.map((slide, i) => (
           <div
             key={i}
@@ -274,42 +385,32 @@ export default function Home() {
             style={{ opacity: i === current ? 1 : 0 }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={slide.after}
-              alt={slide.label}
-              className="w-full h-full object-cover"
-            />
+            <img src={slide.after} alt={slide.label} className="w-full h-full object-cover" />
           </div>
         ))}
 
-        {/* 暗めオーバーレイ */}
-        <div className="absolute inset-0 bg-black/45 z-10" />
+        {/* グラデーションオーバーレイ */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20 z-10" />
 
-        {/* 中央テキスト */}
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
-          <p className="text-amber-400 text-xs md:text-sm font-bold tracking-[0.3em] mb-4">
-            創業50年 ── 地域に根ざした確かな技術
+        {/* 中央テキスト（左寄せ） */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-20 max-w-3xl">
+          <p className="text-amber-400 text-xs md:text-sm font-bold tracking-[0.3em] mb-5 uppercase">
+            Since 1974 ── 創業50年の技術と信頼
           </p>
           <h1
-            className="font-black text-white leading-tight mb-6"
-            style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)", textShadow: "0 2px 24px rgba(0,0,0,0.5)" }}
+            className="font-black text-white leading-tight mb-4"
+            style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)", textShadow: "0 2px 32px rgba(0,0,0,0.6)" }}
           >
-            リフォームで、<br />暮らしが変わる。
+            畳から始まる、<br />愛着つづく<br className="sm:hidden" />住まい再生。
           </h1>
-          <p className="text-white/80 text-sm md:text-base mb-8 max-w-md leading-relaxed">
-            内装・外装・水回りまで。<br className="sm:hidden" />小さな修繕から大きなリノベーションまで対応します。
+          <p className="text-white/75 text-sm md:text-base mb-8 leading-relaxed max-w-md">
+            内装・外装・水回りまで。<br />小さな修繕から大きなリノベーションまで対応します。
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href="#contact"
-              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black rounded transition-colors shadow-lg text-sm tracking-wide"
-            >
+            <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black rounded transition-colors shadow-lg text-sm tracking-wide">
               無料お見積りはこちら
             </a>
-            <a
-              href="#works"
-              className="px-8 py-4 border-2 border-white text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm backdrop-blur-sm"
-            >
+            <a href="#works" className="px-8 py-4 border-2 border-white/80 text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm backdrop-blur-sm">
               施工事例を見る
             </a>
           </div>
@@ -328,22 +429,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 固定CTAボタン（右下・PC） ── */}
+      {/* ── PC固定CTAボタン（右下） ── */}
       <div className="hidden md:flex fixed bottom-0 right-0 z-40 flex-col">
-        <a
-          href="tel:0721634427"
-          className="flex items-center gap-3 px-6 py-4 bg-amber-600 hover:bg-amber-500 text-white transition-colors"
-        >
+        <a href="tel:0721634427" className="flex items-center gap-3 px-6 py-4 bg-amber-600 hover:bg-amber-500 text-white transition-colors">
           <span className="text-xl">📞</span>
           <div>
             <p className="font-black text-lg leading-none">0721-63-4427</p>
             <p className="text-xs text-amber-100 mt-0.5">営業時間 9:00〜18:00</p>
           </div>
         </a>
-        <a
-          href="#contact"
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-stone-800 hover:bg-stone-700 text-white text-sm font-bold transition-colors"
-        >
+        <a href="#contact" className="flex items-center justify-center gap-2 px-6 py-3 bg-stone-800 hover:bg-stone-700 text-white text-sm font-bold transition-colors">
           ✉ お問い合わせ
         </a>
       </div>
@@ -378,12 +473,7 @@ export default function Home() {
             <div className="fade-up">
               <div className="w-full aspect-video rounded-2xl overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/Craftman.png"
-                  alt="リフォームイメージ"
-                  loading="lazy"
-                  className="w-full h-full object-cover"
-                />
+                <img src="/images/Craftman.png" alt="リフォームイメージ" loading="lazy" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="fade-up fade-up-delay-2">
@@ -416,61 +506,48 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Before / After ── */}
+      {/* ── 私たちの歩み（タイムライン） ── */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-14 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">OUR STORY</p>
+            <h2 className="text-3xl font-black text-stone-800">私たちの歩み</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
+            <p className="text-stone-500 text-sm mt-4">畳の匠から、地域の総合リフォーム会社へ</p>
+          </div>
+          <div className="relative">
+            {/* 縦ライン */}
+            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-amber-200 -translate-x-1/2" />
+            <div className="space-y-10">
+              {TIMELINE.map(({ year, title, desc }, i) => (
+                <div key={i} className={`fade-up relative flex gap-6 md:gap-0 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+                  {/* ドット */}
+                  <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-amber-500 border-4 border-white shadow-md z-10 top-1.5" />
+                  {/* コンテンツ */}
+                  <div className={`ml-14 md:ml-0 md:w-[calc(50%-2rem)] ${i % 2 === 0 ? "md:pr-10 md:text-right" : "md:pl-10"}`}>
+                    <span className="inline-block text-xs font-black text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-2">{year}</span>
+                    <h3 className="font-black text-stone-800 text-lg mb-1">{title}</h3>
+                    <p className="text-stone-500 text-sm leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Before / After スライダー ── */}
       <section className="py-20 px-6 bg-stone-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14 fade-up">
             <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">BEFORE / AFTER</p>
             <h2 className="text-3xl font-black text-stone-800">施工前後の比較</h2>
             <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
-            <p className="text-stone-500 text-sm mt-4">リフォームでここまで変わります</p>
+            <p className="text-stone-500 text-sm mt-4">スライダーを左右に動かして比較できます</p>
           </div>
           <div className="space-y-16">
-            {BEFORE_AFTERS.map(({ label, before, after, title, desc }, i) => (
-              <div key={i} className="fade-up">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">{label}</span>
-                  <h3 className="font-black text-stone-800 text-lg">{title}</h3>
-                </div>
-                <div className="grid grid-cols-2 gap-3 md:gap-6">
-                  {/* Before */}
-                  <div className="rounded-2xl overflow-hidden shadow-md">
-                    <div className="relative aspect-video">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={before}
-                        alt="Before"
-                        loading="lazy"
-                        className="w-full h-full object-cover"
-                        style={{ filter: "brightness(0.6) saturate(0.4) sepia(0.4)" }}
-                      />
-                      <div className="absolute inset-0 bg-stone-900/20" />
-                      <span className="absolute top-3 left-3 bg-stone-800 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest">BEFORE</span>
-                    </div>
-                    <div className="bg-stone-100 px-4 py-2.5">
-                      <p className="text-xs text-stone-500 font-medium">施工前</p>
-                    </div>
-                  </div>
-                  {/* After */}
-                  <div className="rounded-2xl overflow-hidden shadow-md">
-                    <div className="relative aspect-video">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={after}
-                        alt="After"
-                        loading="lazy"
-                        className="w-full h-full object-cover"
-                        style={{ filter: "brightness(1.05) saturate(1.1)" }}
-                      />
-                      <span className="absolute top-3 left-3 bg-amber-500 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest">AFTER</span>
-                    </div>
-                    <div className="bg-amber-50 px-4 py-2.5">
-                      <p className="text-xs text-amber-700 font-medium">施工後</p>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-stone-500 text-sm mt-3 leading-relaxed">{desc}</p>
-              </div>
+            {BEFORE_AFTERS.map((item, i) => (
+              <BeforeAfterSlider key={i} {...item} />
             ))}
           </div>
           <div className="text-center mt-12 fade-up">
@@ -489,7 +566,6 @@ export default function Home() {
             <h2 className="text-3xl font-black text-stone-800">施工事例</h2>
             <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
           </div>
-          {/* カテゴリーフィルター */}
           <div className="flex flex-wrap gap-2 justify-center mb-8 fade-up">
             {["すべて", ...WORK_CATEGORIES.map((c) => c.label)].map((cat) => (
               <button
@@ -505,18 +581,12 @@ export default function Home() {
               </button>
             ))}
           </div>
-          {/* カード一覧 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredWorks.map(({ category, title, price, img }, i) => (
               <div key={i} className="fade-up rounded-xl overflow-hidden border border-stone-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
                 <div className="aspect-video overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img}
-                    alt={title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                  <img src={img} alt={title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-4">
                   <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">{category}</span>
@@ -566,9 +636,7 @@ export default function Home() {
             {NEWS.map(({ date, label, title }) => (
               <div key={title} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 py-4 border-b border-stone-100 hover:bg-stone-50 px-2 transition-colors">
                 <span className="text-stone-400 text-sm shrink-0">{date}</span>
-                <span className={`text-xs font-bold px-2 py-0.5 rounded shrink-0 ${
-                  label === "施工事例" ? "bg-amber-100 text-amber-700" : "bg-stone-100 text-stone-600"
-                }`}>{label}</span>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded shrink-0 ${label === "施工事例" ? "bg-amber-100 text-amber-700" : "bg-stone-100 text-stone-600"}`}>{label}</span>
                 <span className="text-stone-700 text-sm">{title}</span>
               </div>
             ))}
@@ -610,7 +678,34 @@ export default function Home() {
             <h2 className="text-3xl font-black text-white">お問い合わせ・無料お見積り</h2>
             <p className="text-amber-100 mt-3 text-sm">お気軽にご相談ください。通常2営業日以内にご返信します。</p>
           </div>
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 space-y-4 fade-up">
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 md:p-8 space-y-5 fade-up">
+
+            {/* お困りごと選択 */}
+            <div>
+              <p className="text-sm font-semibold text-stone-700 mb-3">お困りごとの種類（複数選択可）</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {INQUIRY_OPTIONS.map(({ id, label, icon }) => {
+                  const selected = inquiryTypes.includes(id);
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => toggleInquiry(id)}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-left transition-all ${
+                        selected
+                          ? "border-amber-500 bg-amber-50 text-amber-700"
+                          : "border-stone-200 bg-white text-stone-600 hover:border-amber-300"
+                      }`}
+                    >
+                      <span className="text-xl shrink-0">{icon}</span>
+                      <span className="text-sm font-medium leading-tight">{label}</span>
+                      {selected && <span className="ml-auto text-amber-500 font-black text-base shrink-0">✓</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-semibold text-stone-700 mb-1.5">
                 お名前 <span className="text-red-400">*</span>
@@ -682,9 +777,7 @@ export default function Home() {
       <footer className="bg-stone-900 text-stone-400 py-12 px-6 pb-28 md:pb-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <p className="text-white font-black text-lg mb-1">
-              株式会社<span className="text-amber-500">戸根</span>
-            </p>
+            <p className="text-white font-black text-lg mb-1">株式会社<span className="text-amber-500">戸根</span></p>
             <p className="text-xs mb-3">TONE REFORM</p>
             <p className="text-sm leading-relaxed">創業50年。地域に根ざした<br />リフォーム・工務店。</p>
           </div>
@@ -710,13 +803,21 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* ── 固定CTAボタン（スマホ） ── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex border-t border-stone-200">
-        <a href="tel:0721634427" className="flex-1 py-4 bg-stone-800 text-white text-xs font-bold text-center">
-          📞 電話する
+      {/* ── スマホ固定フローティングCTA ── */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex shadow-2xl">
+        <a
+          href="tel:0721634427"
+          className="flex-1 flex flex-col items-center justify-center gap-0.5 py-3.5 bg-white text-amber-600 border-t-2 border-amber-500 font-bold text-xs"
+        >
+          <span className="text-lg">📞</span>
+          お電話で相談
         </a>
-        <a href="#contact" className="flex-1 py-4 bg-amber-600 text-white text-xs font-bold text-center">
-          ✉ 無料相談
+        <a
+          href="#contact"
+          className="flex-1 flex flex-col items-center justify-center gap-0.5 py-3.5 bg-amber-500 text-white font-bold text-xs"
+        >
+          <span className="text-lg">✉</span>
+          WEBから見積もり
         </a>
       </div>
     </div>
