@@ -161,10 +161,10 @@ const NEWS: NewsItem[] = [
 ];
 
 const INQUIRY_OPTIONS: InquiryOption[] = [
-  { id: "tatami", label: "畳・和室のモダンリノベーション", icon: "🏯" },
-  { id: "wallpaper", label: "壁紙・クロスの張り替え（内装）", icon: "🖼" },
-  { id: "water", label: "水回り（キッチン・お風呂など）", icon: "🚰" },
-  { id: "other", label: "その他・全体的なリフォーム", icon: "🏠" },
+  { id: "tatami", label: "畳・和室のモダンリノベーション", icon: "" },
+  { id: "wallpaper", label: "壁紙・クロスの張り替え（内装）", icon: "" },
+  { id: "water", label: "水回り（キッチン・お風呂など）", icon: "" },
+  { id: "other", label: "その他・全体的なリフォーム", icon: "" },
 ];
 
 // ── フック ────────────────────────────────────────────────
@@ -401,10 +401,10 @@ export default function Home() {
             className="font-black text-white leading-tight mb-4"
             style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)", textShadow: "0 2px 32px rgba(0,0,0,0.6)" }}
           >
-            畳から始まる、<br />愛着つづく<br className="sm:hidden" />住まい再生。
+            リフォームで、<br />暮らしが変わる。
           </h1>
           <p className="text-white/75 text-sm md:text-base mb-8 leading-relaxed max-w-md">
-            内装・外装・水回りまで。<br />小さな修繕から大きなリノベーションまで対応します。
+            創業50年 ── 地域に根ざした確かな技術
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black rounded transition-colors shadow-lg text-sm tracking-wide">
@@ -697,7 +697,6 @@ export default function Home() {
                           : "border-stone-200 bg-white text-stone-600 hover:border-amber-300"
                       }`}
                     >
-                      <span className="text-xl shrink-0">{icon}</span>
                       <span className="text-sm font-medium leading-tight">{label}</span>
                       {selected && <span className="ml-auto text-amber-500 font-black text-base shrink-0">✓</span>}
                     </button>
