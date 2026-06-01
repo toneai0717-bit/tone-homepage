@@ -46,7 +46,6 @@ interface NewsItem {
 interface InquiryOption {
   id: string;
   label: string;
-  icon: string;
 }
 
 // ── データ ────────────────────────────────────────────────
@@ -161,10 +160,10 @@ const NEWS: NewsItem[] = [
 ];
 
 const INQUIRY_OPTIONS: InquiryOption[] = [
-  { id: "tatami", label: "畳・和室のモダンリノベーション", icon: "" },
-  { id: "wallpaper", label: "壁紙・クロスの張り替え（内装）", icon: "" },
-  { id: "water", label: "水回り（キッチン・お風呂など）", icon: "" },
-  { id: "other", label: "その他・全体的なリフォーム", icon: "" },
+  { id: "tatami", label: "畳・和室のモダンリノベーション" },
+  { id: "wallpaper", label: "壁紙・クロスの張り替え（内装）" },
+  { id: "water", label: "水回り（キッチン・お風呂など）" },
+  { id: "other", label: "その他・全体的なリフォーム" },
 ];
 
 // ── フック ────────────────────────────────────────────────
@@ -261,10 +260,15 @@ function BeforeAfterSlider({ before, after, title, desc, label }: BeforeAfterSli
         />
         {/* ドラッグハンドル */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-11 h-11 bg-white rounded-full shadow-xl flex items-center justify-center z-10 pointer-events-none"
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-11 h-11 bg-white rounded-full shadow-xl flex items-center justify-center gap-0.5 z-10 pointer-events-none"
           style={{ left: `${pos}%` }}
         >
-          <span className="text-stone-600 text-base font-black select-none">⇔</span>
+          <svg width="9" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-stone-500">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          <svg width="9" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-stone-500">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
         </div>
         {/* 透明rangeスライダー */}
         <input
@@ -309,11 +313,14 @@ export default function Home() {
     if (!formData.name.trim() || !formData.message.trim()) return;
     setSending(true);
     setSendStatus("idle");
+    const inquiryLabels = INQUIRY_OPTIONS
+      .filter((o) => inquiryTypes.includes(o.id))
+      .map((o) => o.label);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, inquiryTypes }),
+        body: JSON.stringify({ ...formData, inquiryTypes: inquiryLabels }),
       });
       if (res.ok) {
         setSendStatus("success");
@@ -684,12 +691,13 @@ export default function Home() {
             <div>
               <p className="text-sm font-semibold text-stone-700 mb-3">お困りごとの種類（複数選択可）</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {INQUIRY_OPTIONS.map(({ id, label, icon }) => {
+                {INQUIRY_OPTIONS.map(({ id, label }) => {
                   const selected = inquiryTypes.includes(id);
                   return (
                     <button
                       key={id}
                       type="button"
+                      aria-pressed={selected}
                       onClick={() => toggleInquiry(id)}
                       className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-left transition-all ${
                         selected
