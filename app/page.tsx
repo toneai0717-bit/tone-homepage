@@ -443,6 +443,94 @@ export default function Home() {
         </a>
       </div>
 
+      {/* ── Before / After スライダー ── */}
+      <section className="py-20 px-6 bg-stone-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">BEFORE / AFTER</p>
+            <h2 className="text-3xl font-black text-stone-800">施工前後の比較</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
+            <p className="text-stone-500 text-sm mt-4">スライダーを左右に動かして比較できます</p>
+          </div>
+          <div className="space-y-16">
+            {BEFORE_AFTERS.map((item, i) => (
+              <BeforeAfterSlider key={i} {...item} />
+            ))}
+          </div>
+          <div className="text-center mt-12 fade-up">
+            <a href="#contact" className="inline-block px-8 py-4 bg-amber-600 text-white font-bold rounded hover:bg-amber-500 transition-colors shadow-md">
+              あなたのお家もご相談ください →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 施工事例 ── */}
+      <section id="works" className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">WORKS</p>
+            <h2 className="text-3xl font-black text-stone-800">施工事例</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
+          </div>
+          <div className="flex flex-wrap gap-2 justify-center mb-8 fade-up">
+            {["すべて", ...WORK_CATEGORIES.map((c) => c.label)].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                  activeCategory === cat
+                    ? "bg-amber-600 text-white border-amber-600"
+                    : "bg-white text-stone-600 border-stone-200 hover:border-amber-400"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredWorks.map(({ category, title, price, img }, i) => (
+              <div key={i} className="fade-up rounded-xl overflow-hidden border border-stone-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
+                <div className="aspect-video overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={img} alt={title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div className="p-4">
+                  <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">{category}</span>
+                  <h3 className="font-bold text-stone-800 mt-2 mb-1">{title}</h3>
+                  <p className="text-sm text-stone-400">施工費用目安：{price}〜</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10 fade-up">
+            <a href="#contact" className="inline-block px-8 py-3 bg-amber-600 text-white font-bold rounded hover:bg-amber-500 transition-colors">
+              施工のご相談はこちら
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── お客様の声 ── */}
+      <section id="voice" className="py-20 px-6 bg-stone-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 fade-up">
+            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">VOICE</p>
+            <h2 className="text-3xl font-black text-stone-800">お客様の声</h2>
+            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {VOICES.map(({ name, text, stars }, i) => (
+              <div key={i} className={`fade-up fade-up-delay-${i + 1} bg-white rounded-2xl p-6 border border-stone-100 shadow-sm`}>
+                <Stars count={stars} />
+                <p className="text-stone-600 text-sm leading-relaxed mt-3 mb-4">「{text}」</p>
+                <p className="text-xs font-bold text-stone-500">{name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── CTAバナー ── */}
       <section className="bg-amber-600 py-8 px-6">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
@@ -536,96 +624,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Before / After スライダー ── */}
-      <section className="py-20 px-6 bg-stone-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14 fade-up">
-            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">BEFORE / AFTER</p>
-            <h2 className="text-3xl font-black text-stone-800">施工前後の比較</h2>
-            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
-            <p className="text-stone-500 text-sm mt-4">スライダーを左右に動かして比較できます</p>
-          </div>
-          <div className="space-y-16">
-            {BEFORE_AFTERS.map((item, i) => (
-              <BeforeAfterSlider key={i} {...item} />
-            ))}
-          </div>
-          <div className="text-center mt-12 fade-up">
-            <a href="#contact" className="inline-block px-8 py-4 bg-amber-600 text-white font-bold rounded hover:bg-amber-500 transition-colors shadow-md">
-              あなたのお家もご相談ください →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 施工事例 ── */}
-      <section id="works" className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 fade-up">
-            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">WORKS</p>
-            <h2 className="text-3xl font-black text-stone-800">施工事例</h2>
-            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
-          </div>
-          <div className="flex flex-wrap gap-2 justify-center mb-8 fade-up">
-            {["すべて", ...WORK_CATEGORIES.map((c) => c.label)].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
-                  activeCategory === cat
-                    ? "bg-amber-600 text-white border-amber-600"
-                    : "bg-white text-stone-600 border-stone-200 hover:border-amber-400"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredWorks.map(({ category, title, price, img }, i) => (
-              <div key={i} className="fade-up rounded-xl overflow-hidden border border-stone-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
-                <div className="aspect-video overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt={title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-4">
-                  <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">{category}</span>
-                  <h3 className="font-bold text-stone-800 mt-2 mb-1">{title}</h3>
-                  <p className="text-sm text-stone-400">施工費用目安：{price}〜</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-10 fade-up">
-            <a href="#contact" className="inline-block px-8 py-3 bg-amber-600 text-white font-bold rounded hover:bg-amber-500 transition-colors">
-              施工のご相談はこちら
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── お客様の声 ── */}
-      <section id="voice" className="py-20 px-6 bg-stone-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 fade-up">
-            <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">VOICE</p>
-            <h2 className="text-3xl font-black text-stone-800">お客様の声</h2>
-            <div className="w-12 h-1 bg-amber-600 mx-auto mt-3" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {VOICES.map(({ name, text, stars }, i) => (
-              <div key={i} className={`fade-up fade-up-delay-${i + 1} bg-white rounded-2xl p-6 border border-stone-100 shadow-sm`}>
-                <Stars count={stars} />
-                <p className="text-stone-600 text-sm leading-relaxed mt-3 mb-4">「{text}」</p>
-                <p className="text-xs font-bold text-stone-500">{name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── お知らせ ── */}
-      <section id="news" className="py-20 px-6 bg-white">
+      <section id="news" className="py-20 px-6 bg-stone-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12 fade-up">
             <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">NEWS</p>
@@ -645,7 +645,7 @@ export default function Home() {
       </section>
 
       {/* ── 会社情報 ── */}
-      <section id="company" className="py-20 px-6 bg-stone-50">
+      <section id="company" className="py-20 px-6 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12 fade-up">
             <p className="text-amber-600 font-bold text-xs tracking-widest mb-2">COMPANY</p>
