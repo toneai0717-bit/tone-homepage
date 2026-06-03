@@ -10,11 +10,22 @@ interface Slide {
   label: string;
 }
 
+interface WorkDetail {
+  before?: string;
+  after?: string;
+  period: string;
+  overview: string;
+  priceBreakdown: { label: string; amount: string }[];
+  materials?: string;
+  customerVoice?: string;
+}
+
 interface WorkItem {
   category: string;
   title: string;
   price: string;
   img: string;
+  detail?: WorkDetail;
 }
 
 interface BeforeAfterItem {
@@ -88,16 +99,149 @@ const WORK_CATEGORIES = [
   { icon: "🏗️", label: "増改築" },
   { icon: "♿", label: "バリアフリー" },
   { icon: "✨", label: "フルリノベ" },
+  { icon: "🌿", label: "畳" },
 ];
 
 const WORKS: WorkItem[] = [
-  { category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円", img: "/images/Living after.png" },
-  { category: "キッチン", title: "システムキッチン入れ替え", price: "85万円", img: "/images/Kitchen after.png" },
-  { category: "浴室", title: "ユニットバスまるごと交換", price: "95万円", img: "/images/Bathroom.webp" },
-  { category: "外壁", title: "外壁塗装＋防水工事", price: "75万円", img: "/images/Exterior after.png" },
-  { category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円", img: "/images/Roof after.png" },
-  { category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円", img: "/images/fully renovated modern Japanese house after.png" },
-  { category: "畳", title: "畳の張り替えリフォーム", price: "8万円", img: "/images/tatami-after.jpeg" },
+  {
+    category: "リビング", title: "LDKを明るく広々リフォーム", price: "120万円", img: "/images/Living after.png",
+    detail: {
+      before: "/images/Living before.png", after: "/images/Living after.png",
+      period: "約10日間",
+      overview: "築25年のLDKを全面改装。天井・壁・床を一新し、白を基調としたモダンな空間に生まれ変わりました。",
+      priceBreakdown: [
+        { label: "フローリング工事", amount: "45万円" },
+        { label: "壁紙・クロス工事", amount: "35万円" },
+        { label: "天井工事", amount: "20万円" },
+        { label: "諸経費・処分費", amount: "20万円" },
+      ],
+      materials: "東リ フローリング / サンゲツ クロス",
+      customerVoice: "明るくなって毎日過ごすのが楽しくなりました。職人さんの仕事も丁寧で安心でした。",
+    },
+  },
+  {
+    category: "キッチン", title: "システムキッチン入れ替え", price: "85万円", img: "/images/Kitchen after.png",
+    detail: {
+      before: "/images/Kitchen before.png", after: "/images/Kitchen after.png",
+      period: "約3日間",
+      overview: "古いキッチンをLIXILのシステムキッチンに交換。収納も増え、毎日の料理が快適になりました。",
+      priceBreakdown: [
+        { label: "キッチン本体", amount: "55万円" },
+        { label: "取付工事費", amount: "15万円" },
+        { label: "給排水工事", amount: "10万円" },
+        { label: "処分費・諸経費", amount: "5万円" },
+      ],
+      materials: "LIXIL アレスタ（I型 2550mm）",
+      customerVoice: "収納が増えてキッチンがすっきりしました。使い勝手が全然違います！",
+    },
+  },
+  {
+    category: "浴室", title: "ユニットバスまるごと交換", price: "95万円", img: "/images/Bathroom.webp",
+    detail: {
+      after: "/images/Bathroom.webp",
+      period: "約4日間",
+      overview: "在来工法の浴室をTOTOのユニットバスに交換。保温性・清掃性が大幅に向上しました。",
+      priceBreakdown: [
+        { label: "ユニットバス本体", amount: "60万円" },
+        { label: "解体・取付工事", amount: "20万円" },
+        { label: "給排水・電気工事", amount: "10万円" },
+        { label: "処分費・諸経費", amount: "5万円" },
+      ],
+      materials: "TOTO サザナ（1616サイズ）",
+    },
+  },
+  {
+    category: "外壁", title: "外壁塗装＋防水工事", price: "75万円", img: "/images/Exterior after.png",
+    detail: {
+      before: "/images/Exterior before.png", after: "/images/Exterior after.png",
+      period: "約7日間",
+      overview: "築20年の外壁を高耐久シリコン塗料で塗装。屋根・バルコニーの防水工事も同時施工しました。",
+      priceBreakdown: [
+        { label: "外壁塗装工事", amount: "50万円" },
+        { label: "防水工事", amount: "15万円" },
+        { label: "足場仮設・解体", amount: "10万円" },
+      ],
+      materials: "関西ペイント アレスダイナミックシリコン",
+      customerVoice: "見た目が新築みたいになって近所にびっくりされました。",
+    },
+  },
+  {
+    category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円", img: "/images/Roof after.png",
+    detail: {
+      after: "/images/Roof after.png",
+      period: "約5日間",
+      overview: "劣化が進んだ瓦屋根を軽量のガルバリウム鋼板に葺き替え。耐震性・耐久性が大幅に向上しました。",
+      priceBreakdown: [
+        { label: "屋根材（ガルバリウム）", amount: "55万円" },
+        { label: "既存屋根撤去・処分", amount: "25万円" },
+        { label: "防水シート・下地工事", amount: "20万円" },
+        { label: "足場仮設・諸経費", amount: "10万円" },
+      ],
+      materials: "ニチハ センタールーフ（ガルバリウム鋼板）",
+    },
+  },
+  {
+    category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円", img: "/images/fully renovated modern Japanese house after.png",
+    detail: {
+      after: "/images/fully renovated modern Japanese house after.png",
+      period: "約60日間",
+      overview: "築40年の中古戸建を全面リノベーション。間取り変更・全水回り交換・断熱改修まで一括施工しました。",
+      priceBreakdown: [
+        { label: "内装全面工事", amount: "180万円" },
+        { label: "水回り全交換", amount: "150万円" },
+        { label: "外壁・屋根工事", amount: "130万円" },
+        { label: "断熱・窓工事", amount: "80万円" },
+        { label: "諸経費・設計費", amount: "40万円" },
+      ],
+      customerVoice: "まるで新築のような仕上がりで、家族みんな大満足です！",
+    },
+  },
+  {
+    category: "畳", title: "畳の張り替えリフォーム", price: "8万円", img: "/images/tatami-after.jpeg",
+    detail: {
+      before: "/images/tatami-before.jpeg", after: "/images/tatami-after.jpeg",
+      period: "1日",
+      overview: "6畳の和室の畳を国産い草の新品に張り替え。青々とした清潔感あふれる和室に生まれ変わりました。",
+      priceBreakdown: [
+        { label: "畳材料費（6枚）", amount: "54,000円" },
+        { label: "施工費", amount: "12,000円" },
+        { label: "古畳処分費", amount: "12,000円" },
+        { label: "出張費", amount: "2,000円" },
+      ],
+      materials: "国産い草（熊本産）/ 綿糸縁",
+      customerVoice: "い草の香りが部屋に広がって、昔の和室が戻ってきたみたいです。",
+    },
+  },
+  {
+    category: "畳", title: "和室の畳張り替え①", price: "6万円", img: "/images/Tatami-before-1.jpeg",
+    detail: {
+      before: "/images/Tatami-before-1.jpeg",
+      period: "1日",
+      overview: "4.5畳の和室の畳を張り替え。色あせや傷みが目立っていた畳を国産い草の新品に交換しました。",
+      priceBreakdown: [
+        { label: "畳材料費（4.5枚）", amount: "40,500円" },
+        { label: "施工費", amount: "9,000円" },
+        { label: "古畳処分費", amount: "9,000円" },
+        { label: "出張費", amount: "1,500円" },
+      ],
+      materials: "国産い草（熊本産）/ 綿糸縁",
+    },
+  },
+  {
+    category: "畳", title: "和室の畳張り替え②", price: "8万円", img: "/images/Tatami-before-2.jpeg",
+    detail: {
+      before: "/images/Tatami-before-2.jpeg",
+      period: "1日",
+      overview: "6畳の和室の畳を張り替え。長年使用した畳を国産い草の新品に交換し、清潔感ある和室に仕上げました。",
+      priceBreakdown: [
+        { label: "畳材料費（6枚）", amount: "54,000円" },
+        { label: "施工費", amount: "12,000円" },
+        { label: "古畳処分費", amount: "12,000円" },
+        { label: "出張費", amount: "2,000円" },
+      ],
+      materials: "国産い草（熊本産）/ 綿糸縁",
+    },
+  },
 ];
 
 const BEFORE_AFTERS: BeforeAfterItem[] = [
@@ -287,6 +431,134 @@ function BeforeAfterSlider({ before, after, title, desc, label }: BeforeAfterSli
   );
 }
 
+// ── 施工事例モーダル ──────────────────────────────────────
+function WorkModal({ work, onClose }: { work: WorkItem; onClose: () => void }) {
+  const { detail } = work;
+  const hasSlider = !!(detail?.before && detail?.after);
+  const singleImg = detail?.before ?? detail?.after ?? work.img;
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <div
+        className="relative bg-white w-full sm:rounded-2xl sm:max-w-2xl max-h-[92vh] overflow-y-auto shadow-2xl rounded-t-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* 閉じるボタン */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center bg-white/90 hover:bg-stone-100 rounded-full shadow transition-colors"
+          aria-label="閉じる"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {/* 画像エリア */}
+        {hasSlider ? (
+          <ModalSlider before={detail!.before!} after={detail!.after!} />
+        ) : (
+          <div className="w-full rounded-t-2xl overflow-hidden" style={{ aspectRatio: "16/9" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={singleImg} alt={work.title} className="w-full h-full object-cover" />
+          </div>
+        )}
+
+        {/* 詳細コンテンツ */}
+        <div className="p-5 sm:p-6 space-y-5">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full shrink-0">{work.category}</span>
+            <h2 className="font-black text-stone-800 text-lg leading-snug">{work.title}</h2>
+          </div>
+
+          {detail && (
+            <>
+              <p className="text-stone-600 text-sm leading-relaxed">{detail.overview}</p>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-stone-50 rounded-xl p-3.5">
+                  <p className="text-xs font-bold text-stone-400 mb-1">工期</p>
+                  <p className="font-bold text-stone-800 text-sm">{detail.period}</p>
+                </div>
+                <div className="bg-stone-50 rounded-xl p-3.5">
+                  <p className="text-xs font-bold text-stone-400 mb-1">施工費用目安</p>
+                  <p className="font-bold text-amber-600 text-sm">{work.price}〜</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-bold text-stone-700 mb-2">金額内訳</p>
+                <div className="border border-stone-100 rounded-xl overflow-hidden">
+                  {detail.priceBreakdown.map(({ label, amount }, i) => (
+                    <div key={i} className={`flex justify-between px-4 py-2.5 text-sm ${i % 2 === 0 ? "bg-white" : "bg-stone-50"}`}>
+                      <span className="text-stone-500">{label}</span>
+                      <span className="font-bold text-stone-800">{amount}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {detail.materials && (
+                <div>
+                  <p className="text-sm font-bold text-stone-700 mb-1.5">使用材料</p>
+                  <p className="text-sm text-stone-500 bg-stone-50 px-4 py-2.5 rounded-xl">{detail.materials}</p>
+                </div>
+              )}
+
+              {detail.customerVoice && (
+                <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                  <p className="text-xs font-bold text-amber-600 mb-1">お客様の声</p>
+                  <p className="text-sm text-stone-700 leading-relaxed">「{detail.customerVoice}」</p>
+                </div>
+              )}
+            </>
+          )}
+
+          <a
+            href="#contact"
+            onClick={onClose}
+            className="block w-full py-3.5 text-center bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-500 transition-colors text-sm"
+          >
+            同じようなリフォームを相談する →
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ModalSlider({ before, after }: { before: string; after: string }) {
+  const [pos, setPos] = useState(50);
+  return (
+    <div className="relative w-full rounded-t-2xl overflow-hidden select-none" style={{ aspectRatio: "16/9" }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={after} alt="After" className="absolute inset-0 w-full h-full object-cover" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={before} alt="Before" className="absolute inset-0 w-full h-full object-cover" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }} />
+      <span className="absolute top-3 left-3 bg-stone-800/90 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest z-10 pointer-events-none">BEFORE</span>
+      <span className="absolute top-3 right-3 bg-amber-500/90 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest z-10 pointer-events-none">AFTER</span>
+      <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10 pointer-events-none" style={{ left: `${pos}%` }} />
+      <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-11 h-11 bg-white rounded-full shadow-xl flex items-center justify-center gap-0.5 z-10 pointer-events-none" style={{ left: `${pos}%` }}>
+        <svg width="9" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-stone-500"><polyline points="15 18 9 12 15 6" /></svg>
+        <svg width="9" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-stone-500"><polyline points="9 18 15 12 9 6" /></svg>
+      </div>
+      <input type="range" min={0} max={100} value={pos} onChange={(e) => setPos(Number(e.target.value))} className="absolute inset-0 w-full h-full opacity-0 cursor-col-resize z-20" aria-label="Before/After比較スライダー" />
+    </div>
+  );
+}
+
 // ── メインコンポーネント ───────────────────────────────────
 export default function Home() {
   useFadeUp();
@@ -294,6 +566,7 @@ export default function Home() {
   const { current, go } = useHeroSlider(HERO_SLIDES.length);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("すべて");
+  const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
   const [inquiryTypes, setInquiryTypes] = useState<string[]>([]);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
@@ -497,16 +770,21 @@ export default function Home() {
             ))}
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredWorks.map(({ category, title, price, img }, i) => (
-              <div key={i} className="fade-up rounded-xl overflow-hidden border border-stone-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
+            {filteredWorks.map((work, i) => (
+              <div
+                key={i}
+                onClick={() => setSelectedWork(work)}
+                className="fade-up rounded-xl overflow-hidden border border-stone-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group cursor-pointer"
+              >
                 <div className="aspect-video overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt={title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={work.img} alt={work.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-4">
-                  <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">{category}</span>
-                  <h3 className="font-bold text-stone-800 mt-2 mb-1">{title}</h3>
-                  <p className="text-sm text-stone-400">施工費用目安：{price}〜</p>
+                  <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">{work.category}</span>
+                  <h3 className="font-bold text-stone-800 mt-2 mb-1">{work.title}</h3>
+                  <p className="text-sm text-stone-400">施工費用目安：{work.price}〜</p>
+                  <p className="text-xs text-stone-300 mt-1.5">詳細を見る →</p>
                 </div>
               </div>
             ))}
@@ -810,6 +1088,9 @@ export default function Home() {
           © 2026 株式会社戸根. All rights reserved.
         </div>
       </footer>
+
+      {/* ── 施工事例モーダル ── */}
+      {selectedWork && <WorkModal work={selectedWork} onClose={() => setSelectedWork(null)} />}
 
       {/* ── スマホ固定フローティングCTA ── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex shadow-2xl">
