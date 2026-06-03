@@ -213,24 +213,10 @@ const WORKS: WorkItem[] = [
     },
   },
   {
-    category: "畳", title: "和室の畳張り替え①", price: "6万円", img: "/images/Tatami-before-1.jpeg",
+    category: "畳", title: "和室の畳張り替え①", price: "8万円", img: "/images/Tatami-after-1.jpeg",
     detail: {
       before: "/images/Tatami-before-1.jpeg",
-      period: "1日",
-      overview: "4.5畳の和室の畳を張り替え。色あせや傷みが目立っていた畳を国産い草の新品に交換しました。",
-      priceBreakdown: [
-        { label: "畳材料費（4.5枚）", amount: "40,500円" },
-        { label: "施工費", amount: "9,000円" },
-        { label: "古畳処分費", amount: "9,000円" },
-        { label: "出張費", amount: "1,500円" },
-      ],
-      materials: "国産い草（熊本産）/ 綿糸縁",
-    },
-  },
-  {
-    category: "畳", title: "和室の畳張り替え②", price: "8万円", img: "/images/Tatami-before-2.jpeg",
-    detail: {
-      before: "/images/Tatami-before-2.jpeg",
+      after: "/images/Tatami-after-1.jpeg",
       period: "1日",
       overview: "6畳の和室の畳を張り替え。長年使用した畳を国産い草の新品に交換し、清潔感ある和室に仕上げました。",
       priceBreakdown: [
