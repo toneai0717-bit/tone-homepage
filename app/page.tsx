@@ -97,7 +97,7 @@ const WORKS: WorkItem[] = [
   { category: "外壁", title: "外壁塗装＋防水工事", price: "75万円", img: "/images/Exterior after.png" },
   { category: "屋根", title: "屋根の葺き替えリフォーム", price: "110万円", img: "/images/Roof after.png" },
   { category: "フルリノベ", title: "中古戸建まるごとリノベ", price: "580万円", img: "/images/fully renovated modern Japanese house after.png" },
-  { category: "畳", title: "畳の張り替えリフォーム", price: "8万円", img: "/images/Tatami After.jpeg" },
+  { category: "畳", title: "畳の張り替えリフォーム", price: "8万円", img: "/images/tatami-after.jpeg" },
 ];
 
 const BEFORE_AFTERS: BeforeAfterItem[] = [
@@ -117,8 +117,8 @@ const BEFORE_AFTERS: BeforeAfterItem[] = [
   },
   {
     label: "畳",
-    before: "/images/Tatami Before.jpeg",
-    after:  "/images/Tatami After.jpeg",
+    before: "/images/tatami-before.jpeg",
+    after:  "/images/tatami-after.jpeg",
     title: "畳の張り替えリフォーム",
     desc: "色あせて傷んだ畳を新品に張り替え。青々とした清潔感あふれる和室に生まれ変わりました。",
   },
