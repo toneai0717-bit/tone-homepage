@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 // ── 型定義 ────────────────────────────────────────────────
@@ -61,6 +61,12 @@ const NAV_LINKS = [
   { href: "#news", label: "お知らせ" },
   { href: "#company", label: "会社情報" },
 ];
+
+// スクロール連動ヒーローで使う実写ビフォーアフター
+const HERO_REVEAL = {
+  before: "/images/tatami-before.jpeg",
+  after:  "/images/tatami-after.jpeg",
+};
 
 const WORK_CATEGORIES = [
   { icon: "🛋", label: "リビング" },
@@ -298,6 +304,18 @@ function useHeaderScroll() {
   return scrolled;
 }
 
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const fn = () => setReduced(mq.matches);
+    fn();
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
+  return reduced;
+}
+
 // ── コンポーネント ────────────────────────────────────────
 function Stars({ count }: { count: number }) {
   return (
@@ -503,6 +521,125 @@ function ModalSlider({ before, after }: { before: string; after: string }) {
   );
 }
 
+// ── スクロール連動ヒーロー（施工ビフォーアフター） ──────────
+function ScrollRevealHero() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const reduced = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (reduced) {
+      setProgress(1);
+      return;
+    }
+    const track = trackRef.current;
+    if (!track) return;
+    let raf = 0;
+    const update = () => {
+      const total = track.offsetHeight - window.innerHeight;
+      const scrolled = Math.min(Math.max(-track.getBoundingClientRect().top, 0), total || 1);
+      setProgress(total > 0 ? scrolled / total : 0);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [reduced]);
+
+  const p = progress;
+
+  return (
+    <section ref={trackRef} className="relative h-[240vh]" aria-label="施工事例 ビフォーアフター">
+      <div className="sticky top-0 h-[100dvh] min-h-[600px] overflow-hidden">
+        {/* ゆるやかなズーム（完成に向けて引いていく） */}
+        <div
+          className="absolute inset-0"
+          style={{ transform: `scale(${1.06 - p * 0.06})`, transformOrigin: "center" }}
+        >
+          {/* After（ベース・完成後） */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={HERO_REVEAL.after} alt="リフォーム後の和室" className="absolute inset-0 w-full h-full object-cover" />
+          {/* Before（上に重ね、スクロールで左から消える） */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={HERO_REVEAL.before}
+            alt="リフォーム前の和室"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ clipPath: `inset(0 0 0 ${p * 100}%)` }}
+          />
+        </div>
+
+        {/* 変化の境界線 */}
+        <div
+          className="absolute top-0 bottom-0 w-px bg-white/80 z-10 pointer-events-none"
+          style={{ left: `${p * 100}%`, opacity: p > 0.012 && p < 0.985 ? 1 : 0 }}
+        />
+
+        {/* BEFORE / AFTER ラベル */}
+        <span
+          className="absolute top-24 left-6 bg-stone-900/75 text-white text-[11px] font-black px-3 py-1 rounded-full tracking-widest z-10 pointer-events-none"
+          style={{ opacity: Math.max(0, 1 - p * 1.6) }}
+        >
+          BEFORE
+        </span>
+        <span
+          className="absolute top-24 right-6 bg-amber-500/90 text-white text-[11px] font-black px-3 py-1 rounded-full tracking-widest z-10 pointer-events-none"
+          style={{ opacity: Math.max(0, (p - 0.3) * 1.8) }}
+        >
+          AFTER
+        </span>
+
+        {/* テキスト可読性のためのグラデーション */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10 z-10 pointer-events-none" />
+
+        {/* コピー */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-20 max-w-3xl">
+          <p className="text-amber-400 text-xs md:text-sm font-bold tracking-[0.3em] mb-5 uppercase">
+            Since 1974 ── 創業50年の技術と信頼
+          </p>
+          <h1
+            className="font-black text-white leading-tight mb-4"
+            style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)", textShadow: "0 2px 32px rgba(0,0,0,0.6)" }}
+          >
+            リフォームで、<br />暮らしが変わる。
+          </h1>
+          <p className="text-white/75 text-sm md:text-base mb-8 leading-relaxed max-w-md">
+            創業50年 ── 地域に根ざした確かな技術
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black rounded transition-colors shadow-lg text-sm tracking-wide">
+              無料お見積りはこちら
+            </a>
+            <a href="#works" className="px-8 py-4 border-2 border-white/80 text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm backdrop-blur-sm">
+              施工事例を見る
+            </a>
+          </div>
+        </div>
+
+        {/* スクロールヒント */}
+        <div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
+          style={{ opacity: Math.max(0, 1 - p * 4) }}
+        >
+          <span className="text-white/70 text-xs">スクロールで生まれ変わる</span>
+          <svg width="16" height="24" viewBox="0 0 16 24" fill="none" className="animate-bounce">
+            <rect x="1" y="1" width="14" height="22" rx="7" stroke="white" strokeOpacity="0.6" strokeWidth="1.5" />
+            <circle cx="8" cy="7" r="2" fill="white" />
+          </svg>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ── メインコンポーネント ───────────────────────────────────
 export default function Home() {
   useFadeUp();
@@ -600,45 +737,8 @@ export default function Home() {
         )}
       </header>
 
-      {/* ── ヒーロー（動画） ── */}
-      <section className="relative h-[100dvh] min-h-[600px] overflow-hidden">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/images/hero-transition.mp4"
-          poster="/images/Living after.png"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-
-        {/* グラデーションオーバーレイ */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20 z-10" />
-
-        {/* 中央テキスト（左寄せ） */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-20 max-w-3xl">
-          <p className="text-amber-400 text-xs md:text-sm font-bold tracking-[0.3em] mb-5 uppercase">
-            Since 1974 ── 創業50年の技術と信頼
-          </p>
-          <h1
-            className="font-black text-white leading-tight mb-4"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)", textShadow: "0 2px 32px rgba(0,0,0,0.6)" }}
-          >
-            リフォームで、<br />暮らしが変わる。
-          </h1>
-          <p className="text-white/75 text-sm md:text-base mb-8 leading-relaxed max-w-md">
-            創業50年 ── 地域に根ざした確かな技術
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black rounded transition-colors shadow-lg text-sm tracking-wide">
-              無料お見積りはこちら
-            </a>
-            <a href="#works" className="px-8 py-4 border-2 border-white/80 text-white font-bold rounded hover:bg-white hover:text-stone-800 transition-colors text-sm backdrop-blur-sm">
-              施工事例を見る
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* ── ヒーロー（スクロール連動リフォーム） ── */}
+      <ScrollRevealHero />
 
       {/* ── PC固定CTAボタン（右下） ── */}
       <div className="hidden md:flex fixed bottom-0 right-0 z-40 flex-col">
