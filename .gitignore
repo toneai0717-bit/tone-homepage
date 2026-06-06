@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 未使用の大容量メディア（ローカルにのみ保持）
+public/images/*.mp4
