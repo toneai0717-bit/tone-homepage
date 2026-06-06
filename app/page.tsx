@@ -297,9 +297,19 @@ function useFadeUp() {
 function useHeaderScroll() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
+    // ヒーローを抜けるまでは初期状態（透明）を維持し、抜けてから白くする
+    const fn = () => {
+      const hero = document.getElementById("hero");
+      const threshold = hero ? hero.offsetHeight - window.innerHeight - 8 : 60;
+      setScrolled(window.scrollY > threshold);
+    };
+    fn();
     window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+    window.addEventListener("resize", fn, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", fn);
+      window.removeEventListener("resize", fn);
+    };
   }, []);
   return scrolled;
 }
@@ -557,7 +567,7 @@ function ScrollRevealHero() {
   const p = progress;
 
   return (
-    <section ref={trackRef} className="relative h-[240vh]" aria-label="施工事例 ビフォーアフター">
+    <section ref={trackRef} id="hero" className="relative h-[240vh]" aria-label="施工事例 ビフォーアフター">
       <div className="sticky top-0 h-[100dvh] min-h-[600px] overflow-hidden">
         {/* ゆるやかなズーム（完成に向けて引いていく） */}
         <div
@@ -581,10 +591,29 @@ function ScrollRevealHero() {
           />
         </div>
 
-        {/* 変化の境界線 */}
+        {/* 変化の境界：光のエッジ（リフォームの波） */}
         <div
-          className="absolute top-0 bottom-0 w-px bg-white/80 z-10 pointer-events-none"
-          style={{ left: `${p * 100}%`, opacity: p > 0.012 && p < 0.985 ? 1 : 0 }}
+          className="absolute top-0 bottom-0 z-10 pointer-events-none"
+          style={{
+            left: `${p * 100}%`,
+            width: "180px",
+            transform: "translateX(-50%)",
+            opacity: p > 0.012 && p < 0.985 ? 1 : 0,
+            background:
+              "linear-gradient(to right, transparent 0%, rgba(255,240,205,0) 35%, rgba(255,246,220,0.5) 50%, rgba(255,240,205,0) 65%, transparent 100%)",
+            mixBlendMode: "screen",
+          }}
+        />
+        <div
+          className="absolute top-0 bottom-0 w-[2px] z-10 pointer-events-none"
+          style={{
+            left: `${p * 100}%`,
+            transform: "translateX(-50%)",
+            opacity: p > 0.012 && p < 0.985 ? 1 : 0,
+            background:
+              "linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,250,236,0.95) 50%, rgba(255,255,255,0) 100%)",
+            boxShadow: "0 0 18px 2px rgba(255,238,200,0.55)",
+          }}
         />
 
         {/* BEFORE / AFTER ラベル */}
@@ -604,21 +633,37 @@ function ScrollRevealHero() {
         {/* テキスト可読性のためのグラデーション（左だけ陰、右は明るく） */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/15 to-transparent z-10 pointer-events-none" />
 
+        {/* シネマティックなビネット（四隅をわずかに締める） */}
+        <div
+          className="absolute inset-0 z-10 pointer-events-none"
+          style={{ boxShadow: "inset 0 0 180px 40px rgba(0,0,0,0.45)" }}
+        />
+
+        {/* フィルムグレイン（量産AIっぽいフラットさを消す質感） */}
+        <div
+          className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay opacity-[0.09]"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            backgroundSize: "160px 160px",
+          }}
+        />
+
         {/* コピー */}
         <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-20 max-w-3xl">
-          <p className="text-amber-400 text-xs md:text-sm font-bold tracking-[0.3em] mb-5 uppercase">
+          <p className="hero-rise text-amber-400 text-xs md:text-sm font-bold tracking-[0.3em] mb-5 uppercase" style={{ animationDelay: "0.05s" }}>
             Since 1974 ── 創業50年の技術と信頼
           </p>
           <h1
-            className="font-black text-white leading-tight mb-4"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)", textShadow: "0 2px 32px rgba(0,0,0,0.6)" }}
+            className="hero-rise font-black text-white leading-tight mb-4"
+            style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)", textShadow: "0 2px 32px rgba(0,0,0,0.6)", animationDelay: "0.18s" }}
           >
             リフォームで、<br />暮らしが変わる。
           </h1>
-          <p className="text-white/75 text-sm md:text-base mb-8 leading-relaxed max-w-md">
+          <p className="hero-rise text-white/75 text-sm md:text-base mb-8 leading-relaxed max-w-md" style={{ animationDelay: "0.32s" }}>
             創業50年 ── 地域に根ざした確かな技術
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="hero-rise flex flex-col sm:flex-row gap-3" style={{ animationDelay: "0.46s" }}>
             <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black rounded transition-colors shadow-lg text-sm tracking-wide">
               無料お見積りはこちら
             </a>
@@ -698,7 +743,10 @@ export default function Home() {
     <div className="min-h-screen bg-white text-stone-800">
 
       {/* ── ヘッダー ── */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white header-shadow" : "bg-transparent"}`}>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white header-shadow" : "bg-transparent"}`}
+        style={scrolled ? undefined : { textShadow: "0 1px 14px rgba(0,0,0,0.45)" }}
+      >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex flex-col leading-tight">
             <span className={`text-xl font-black transition-colors ${scrolled ? "text-stone-800" : "text-white"}`}>
