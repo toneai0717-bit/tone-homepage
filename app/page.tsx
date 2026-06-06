@@ -616,20 +616,6 @@ function ScrollRevealHero() {
           }}
         />
 
-        {/* BEFORE / AFTER ラベル */}
-        <span
-          className="absolute top-24 left-6 bg-stone-900/75 text-white text-[11px] font-black px-3 py-1 rounded-full tracking-widest z-10 pointer-events-none"
-          style={{ opacity: Math.max(0, 1 - p * 1.6) }}
-        >
-          BEFORE
-        </span>
-        <span
-          className="absolute top-24 right-6 bg-amber-500/90 text-white text-[11px] font-black px-3 py-1 rounded-full tracking-widest z-10 pointer-events-none"
-          style={{ opacity: Math.max(0, (p - 0.3) * 1.8) }}
-        >
-          AFTER
-        </span>
-
         {/* テキスト可読性のためのグラデーション（左だけ陰、右は明るく） */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/15 to-transparent z-10 pointer-events-none" />
 
