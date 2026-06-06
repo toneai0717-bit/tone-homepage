@@ -562,7 +562,11 @@ function ScrollRevealHero() {
         {/* ゆるやかなズーム（完成に向けて引いていく） */}
         <div
           className="absolute inset-0"
-          style={{ transform: `scale(${1.06 - p * 0.06})`, transformOrigin: "center" }}
+          style={{
+            transform: `scale(${1.06 - p * 0.06})`,
+            transformOrigin: "center",
+            filter: "brightness(1.12) saturate(1.08) contrast(1.02)",
+          }}
         >
           {/* After（ベース・完成後） */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -597,8 +601,8 @@ function ScrollRevealHero() {
           AFTER
         </span>
 
-        {/* テキスト可読性のためのグラデーション */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10 z-10 pointer-events-none" />
+        {/* テキスト可読性のためのグラデーション（左だけ陰、右は明るく） */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/15 to-transparent z-10 pointer-events-none" />
 
         {/* コピー */}
         <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-20 max-w-3xl">
