@@ -1,15 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 // ── 型定義 ────────────────────────────────────────────────
-interface Slide {
-  before: string;
-  after: string;
-  label: string;
-}
-
 interface WorkDetail {
   before?: string;
   after?: string;
@@ -66,24 +60,6 @@ const NAV_LINKS = [
   { href: "#voice", label: "お客様の声" },
   { href: "#news", label: "お知らせ" },
   { href: "#company", label: "会社情報" },
-];
-
-const HERO_SLIDES: Slide[] = [
-  {
-    before: "/images/Living before.png",
-    after:  "/images/Living after.png",
-    label: "リビングリフォーム",
-  },
-  {
-    before: "/images/Kitchen before.png",
-    after:  "/images/Kitchen after.png",
-    label: "キッチンリフォーム",
-  },
-  {
-    before: "/images/Exterior before.png",
-    after:  "/images/Exterior after.png",
-    label: "外装リフォーム",
-  },
 ];
 
 const WORK_CATEGORIES = [
@@ -322,24 +298,6 @@ function useHeaderScroll() {
   return scrolled;
 }
 
-function useHeroSlider(count: number) {
-  const [current, setCurrent] = useState(0);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const go = useCallback((i: number) => {
-    setCurrent(i);
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => go((i + 1) % count), 5500);
-  }, [count]);
-
-  useEffect(() => {
-    timer.current = setTimeout(() => go(1), 5500);
-    return () => { if (timer.current) clearTimeout(timer.current); };
-  }, [go]);
-
-  return { current, go };
-}
-
 // ── コンポーネント ────────────────────────────────────────
 function Stars({ count }: { count: number }) {
   return (
@@ -549,7 +507,6 @@ function ModalSlider({ before, after }: { before: string; after: string }) {
 export default function Home() {
   useFadeUp();
   const scrolled = useHeaderScroll();
-  const { current, go } = useHeroSlider(HERO_SLIDES.length);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("すべて");
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
@@ -643,18 +600,17 @@ export default function Home() {
         )}
       </header>
 
-      {/* ── ヒーロースライダー ── */}
+      {/* ── ヒーロー（動画） ── */}
       <section className="relative h-[100dvh] min-h-[600px] overflow-hidden">
-        {HERO_SLIDES.map((slide, i) => (
-          <div
-            key={i}
-            className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: i === current ? 1 : 0 }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={slide.after} alt={slide.label} className="w-full h-full object-cover" />
-          </div>
-        ))}
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/images/hero-transition.mp4"
+          poster="/images/Living after.png"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
 
         {/* グラデーションオーバーレイ */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20 z-10" />
@@ -681,18 +637,6 @@ export default function Home() {
               施工事例を見る
             </a>
           </div>
-        </div>
-
-        {/* スライダードット */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-          {HERO_SLIDES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => go(i)}
-              className={`rounded-full transition-all ${i === current ? "w-8 h-2.5 bg-amber-500" : "w-2.5 h-2.5 bg-white/50 hover:bg-white"}`}
-              aria-label={`スライド${i + 1}`}
-            />
-          ))}
         </div>
       </section>
 
